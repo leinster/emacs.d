@@ -37,7 +37,6 @@
 (el-get-install "rvm")
 (el-get-install "ruby-mode")
 (el-get-install "ruby-compilation")
-(el-get-install "ruby-electric")
 (el-get-install "ruby-test-mode")
 (el-get-install "ri-emacs")
 (el-get-install "rinari")
@@ -80,6 +79,7 @@
 
 (defun jon-ruby-hook ()
   (esk-run-coding-hook)
+  (paredit-mode)
   (subword-mode))
 (add-hook 'ruby-mode-hook 'jon-ruby-hook)
 
