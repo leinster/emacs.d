@@ -12,11 +12,6 @@
 (global-set-key "\C-cw" 'jon-copy-filename-to-kill-ring)
 (global-set-key `[(control meta tab)] 'indent-rigidly)
 
-(global-set-key [?\s-j] 'windmove-down)
-(global-set-key [?\s-k] 'windmove-up)
-(global-set-key [?\s-h] 'windmove-left)
-(global-set-key [?\s-l] 'windmove-right)
-
 (if (fboundp 'mc/mark-next-like-this)
     (progn
       (global-set-key (kbd "C->") 'mc/mark-next-like-this)
