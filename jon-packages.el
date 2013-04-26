@@ -92,7 +92,7 @@
 
 ;; matches jshint output
 (add-to-list 'compilation-error-regexp-alist
-             '("^\\([^:\n\" ]+\\): line \\([0-9]+\\), col \\([0-9]+\\)" 1 2 3))
+             '("^\\(- \\)?\\([^:\n\" ]+\\): line \\([0-9]+\\), col \\([0-9]+\\)" 2 3 4))
 
 (defun jon-js-hook ()
   (esk-run-coding-hook)
