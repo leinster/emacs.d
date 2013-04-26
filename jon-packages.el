@@ -29,10 +29,6 @@
         (:name less-css-mode
                :type elpa
                :features "less-css-mode")
-        (:name pretty-symbols
-               :type git
-               :url "https://github.com/drothlis/pretty-symbols.git"
-               :features "pretty-symbols"
                :after (progn
                         (setq pretty-symbol-categories '(lambda relational logical))))
         ))
@@ -61,7 +57,6 @@
 (el-get-install "grep-edit")
 (el-get-install "multiple-cursors")
 (el-get-install "less-css-mode")
-(el-get-install "pretty-symbols")
 (el-get-install "paredit")
 (el-get-install "php-mode")
 
@@ -109,7 +104,6 @@
                (file-name-nondirectory (buffer-file-name (current-buffer)))))
   (set (make-local-variable 'compilation-read-command) nil))
 (add-hook 'js-mode-hook 'jon-js-hook)
-(add-hook 'js-mode-hook 'pretty-symbols-mode)
 
 (eval-after-load 'js
   '(progn
