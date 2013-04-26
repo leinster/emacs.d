@@ -14,7 +14,7 @@
                         (add-to-list 'auto-mode-alist '("\\.mustache$" . mustache-mode))))
         (:name markdown-mode
                :after (progn
-                        (setq markdown-command "kramdown")))
+                        (setq markdown-command "~/SE/scripts/markitup")))
         (:name deft
                :after (progn
                         (setq deft-extension "md"
