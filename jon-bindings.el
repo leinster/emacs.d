@@ -9,6 +9,7 @@
 (global-set-key "\C-ct" 'insert-timestamp)
 (global-set-key "\C-cm" 'magit-status)
 (global-set-key "\C-cu" 'browse-url-at-point)
+(global-set-key "\C-cv" 'jon-switch-to-vm-shell)
 (global-set-key "\C-cw" 'jon-copy-filename-to-kill-ring)
 (global-set-key `[(control meta tab)] 'indent-rigidly)
 

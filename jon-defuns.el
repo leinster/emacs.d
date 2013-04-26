@@ -91,6 +91,11 @@ new shell if required, and set `jon-shell-buffer'."
               (call-interactively 'shell)))
     (shell jon-shell-buffer)))
 
+(defun jon-switch-to-vm-shell ()
+  "Switch to shell buffer `#vm`."
+  (interactive)
+  (shell "#vm"))
+
 (defun jon-hash-sorted-region (start end)
   "Return an md5 of the current region's words when sorted in a buffer."
   (interactive "r")
