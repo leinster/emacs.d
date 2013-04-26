@@ -116,4 +116,11 @@ new shell if required, and set `jon-shell-buffer'."
 (fset 'ruby-debug
    [tab ?r ?e ?q ?u ?i ?r ?e ?  ?\' ?r ?u ?b ?y ?- ?d ?e ?b ?u ?g ?\C-f ?\; ?  ?d ?e ?b ?u ?g ?g ?e ?r ?\C-j])
 
+(defun jon-greek-lambda ()
+  (interactive)
+  (font-lock-add-keywords nil `(("\\<function\\>"
+                                 (0 (progn (compose-region (match-beginning 0) (match-end 0)
+                                                           ,(make-char 'greek-iso8859-7 107))
+                                           nil))))))
+
 (provide 'jon-defuns)

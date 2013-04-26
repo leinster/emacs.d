@@ -108,6 +108,7 @@
                (file-name-nondirectory (buffer-file-name (current-buffer)))))
   (set (make-local-variable 'compilation-read-command) nil))
 (add-hook 'js-mode-hook 'jon-js-hook)
+(add-hook 'js-mode-hook 'jon-greek-lambda)
 
 (eval-after-load 'js
   '(progn
