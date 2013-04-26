@@ -12,6 +12,7 @@
       (remq 'process-kill-buffer-query-function
             kill-buffer-query-functions))
 
+(server-start)
 (recentf-mode 1)
 (show-paren-mode 1)
 (ansi-color-for-comint-mode-on)
