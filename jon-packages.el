@@ -62,6 +62,7 @@
 (el-get-install "less-css-mode")
 (el-get-install "paredit")
 (el-get-install "php-mode")
+(el-get-install "go-mode")
 
 ;; install is broken
 ;; (el-get-install "emacs-goodies-el")
@@ -203,5 +204,10 @@
 ;;; windmove (shift-arrow to switch windows)
 (require 'windmove)
 (windmove-default-keybindings)
+
+;;; go-mode
+(defun jon-go-mode-hook ()
+  (setq tab-width 4))
+(add-hook 'go-mode-hook 'jon-go-mode-hook)
 
 (provide 'jon-packages)
