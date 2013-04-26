@@ -29,10 +29,13 @@
         (:name less-css-mode
                :type elpa
                :features "less-css-mode")
+        (:name csv-mode
+               :type elpa
                :after (progn
-                        (setq pretty-symbol-categories '(lambda relational logical))))
+                        (autoload 'csv-mode "csv-mode" "Major mode for editing CSV files" t)))
         ))
 
+(el-get-install "csv-mode")
 (el-get-install "autopair")
 (el-get-install "idle-highlight-mode")
 (el-get-install "rvm")
@@ -60,10 +63,8 @@
 (el-get-install "paredit")
 (el-get-install "php-mode")
 
-;; not working, emacs-goodies was for csv-mode
+;; install is broken
 ;; (el-get-install "emacs-goodies-el")
-;; (el-get-install "csv-mode")
-;; (el-get-install "gist")
 
 (el-get 'sync)
 
