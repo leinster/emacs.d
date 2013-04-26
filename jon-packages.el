@@ -12,6 +12,9 @@
       '((:name mustache-mode
                :after (progn
                         (add-to-list 'auto-mode-alist '("\\.mustache$" . mustache-mode))))
+        (:name markdown-mode
+               :after (progn
+                        (setq markdown-command "kramdown")))
         (:name deft
                :after (progn
                         (setq deft-extension "md"
