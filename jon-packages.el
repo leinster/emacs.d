@@ -81,6 +81,8 @@
 
 (defun jon-ruby-hook ()
   (esk-run-coding-hook)
+  (add-to-list (make-local-variable 'paredit-space-for-delimiter-predicates)
+               (lambda (_ _) nil))
   (paredit-mode)
   (subword-mode))
 (add-hook 'ruby-mode-hook 'jon-ruby-hook)
