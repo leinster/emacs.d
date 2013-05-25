@@ -9,12 +9,11 @@
     (eval-print-last-sexp)))
 
 (setq el-get-sources
-      '((:name mustache-mode
+      '(
+        (:name csv-mode
+               :type elpa
                :after (progn
-                        (add-to-list 'auto-mode-alist '("\\.mustache$" . mustache-mode))))
-        (:name markdown-mode
-               :after (progn
-                        (setq markdown-command "~/SE/scripts/markitup")))
+                        (autoload 'csv-mode "csv-mode" "Major mode for editing CSV files" t)))
         (:name deft
                :after (progn
                         (setq deft-extension "md"
@@ -23,50 +22,57 @@
                :type http
                :url "http://emacswiki.org/emacs/download/grep-edit.el"
                :features "grep-edit")
-        (:name multiple-cursors
-               :type elpa
-               :features "multiple-cursors")
         (:name less-css-mode
                :type elpa
                :features "less-css-mode")
+        (:name markdown-mode
+               :after (progn
+                        (setq markdown-command "~/SE/scripts/markitup")))
+        (:name multiple-cursors
+               :type elpa
+               :features "multiple-cursors")
+        (:name mustache-mode
+               :after (progn
+                        (add-to-list 'auto-mode-alist '("\\.mustache$" . mustache-mode))))
+        (:name powerline
+               :type git
+               :url "git://github.com/jonathanchu/emacs-powerline.git"
+               :features "powerline")
         (:name window-number
                :type elpa
                :features "window-number")
-        (:name csv-mode
-               :type elpa
-               :after (progn
-                        (autoload 'csv-mode "csv-mode" "Major mode for editing CSV files" t)))
         ))
 
-(el-get-install "csv-mode")
 (el-get-install "autopair")
-(el-get-install "idle-highlight-mode")
-(el-get-install "rvm")
-(el-get-install "ruby-mode")
-(el-get-install "ruby-compilation")
-(el-get-install "ruby-test-mode")
-(el-get-install "ri-emacs")
-(el-get-install "rinari")
-(el-get-install "inf-ruby")
+(el-get-install "coffee-mode")
+(el-get-install "csv-mode")
+(el-get-install "deft")
+(el-get-install "emacs-jabber")
+(el-get-install "go-mode")
+(el-get-install "grep-edit")
 (el-get-install "haml-mode")
-(el-get-install "sass-mode")
-(el-get-install "yaml-mode")
+(el-get-install "haskell-mode")
+(el-get-install "idle-highlight-mode")
+(el-get-install "inf-ruby")
+(el-get-install "less-css-mode")
 (el-get-install "magit")
 (el-get-install "magithub")
 (el-get-install "markdown-mode")
-(el-get-install "emacs-jabber")
-(el-get-install "mustache-mode")
-(el-get-install "coffee-mode")
-(el-get-install "haskell-mode")
-(el-get-install "deft")
-(el-get-install "rainbow-mode")
-(el-get-install "grep-edit")
 (el-get-install "multiple-cursors")
-(el-get-install "less-css-mode")
+(el-get-install "mustache-mode")
 (el-get-install "paredit")
 (el-get-install "php-mode")
-(el-get-install "go-mode")
+(el-get-install "powerline")
+(el-get-install "rainbow-mode")
+(el-get-install "ri-emacs")
+(el-get-install "rinari")
+(el-get-install "ruby-compilation")
+(el-get-install "ruby-mode")
+(el-get-install "ruby-test-mode")
+(el-get-install "rvm")
+(el-get-install "sass-mode")
 (el-get-install "window-number")
+(el-get-install "yaml-mode")
 
 ;; install is broken
 ;; (el-get-install "emacs-goodies-el")
