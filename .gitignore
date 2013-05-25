@@ -4,3 +4,6 @@ custom.el
 el-get
 recentf
 auto-save-list
+/.mc-lists.el
+/url/cookies
+/themes/blackboard-theme/
