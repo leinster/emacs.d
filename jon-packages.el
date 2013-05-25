@@ -195,11 +195,6 @@
 ;;; ssh
 (autoload 'ssh "ssh" "SSH" t)
 
-;;; markdown-mode
-(defun jon-markdown-hook ()
-  (longlines-mode))
-(add-hook 'markdown-mode-hook 'jon-markdown-hook)
-
 ;;; flyspell
 (defun jon-flyspell-hook ()
   (setq ispell-program-name "aspell"
