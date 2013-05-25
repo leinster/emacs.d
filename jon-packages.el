@@ -87,8 +87,10 @@
   (esk-run-coding-hook)
   (add-to-list (make-local-variable 'paredit-space-for-delimiter-predicates)
                (lambda (_ _) nil))
-  (paredit-mode)
-  (subword-mode))
+  (subword-mode)
+  (set (make-local-variable 'compile-command)
+       (concat "rubocop -es "
+               (file-name-nondirectory (buffer-file-name (current-buffer))))))
 (add-hook 'ruby-mode-hook 'jon-ruby-hook)
 
 ;;; javascript
