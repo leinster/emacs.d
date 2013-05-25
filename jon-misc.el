@@ -24,8 +24,6 @@
 (windmove-default-keybindings)
 ;; (global-whitespace-mode t)
 (winner-mode t)
-(window-number-mode t)
-(window-number-meta-mode t)
 
 (setq-default locale-coding-system 'utf-8)
 (set-language-environment "utf-8")

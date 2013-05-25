@@ -40,6 +40,10 @@
                :features "powerline")
         (:name window-number
                :type elpa
+               :after (progn
+                        (load-library "window-number")
+                        (window-number-mode t)
+                        (window-number-meta-mode t))
                :features "window-number")
         ))
 
