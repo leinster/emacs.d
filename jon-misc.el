@@ -15,6 +15,8 @@
 (server-start)
 (recentf-mode 1)
 (show-paren-mode 1)
+(setq show-paren-style 'expression)
+; (setq show-paren-style 'parenthesis)
 (ansi-color-for-comint-mode-on)
 (global-auto-revert-mode t)
 (line-number-mode t)
