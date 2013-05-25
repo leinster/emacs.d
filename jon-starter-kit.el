@@ -121,12 +121,9 @@ imenu index, then jumps to that symbol's location."
   "Hook that gets run on activation of any programming mode.")
 
 (add-hook 'esk-coding-hook 'esk-local-column-number-mode)
-(add-hook 'esk-coding-hook 'esk-local-comment-auto-fill)
 (add-hook 'esk-coding-hook 'esk-turn-on-hl-line-mode)
 (add-hook 'esk-coding-hook 'esk-turn-on-save-place-mode)
-(add-hook 'esk-coding-hook 'esk-pretty-lambdas)
 (add-hook 'esk-coding-hook 'esk-add-watchwords)
-;; (add-hook 'esk-coding-hook 'idle-highlight)
 
 (defun esk-run-coding-hook ()
   "Enable things that are convenient across all coding buffers."
