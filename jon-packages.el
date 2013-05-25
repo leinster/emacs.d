@@ -38,6 +38,9 @@
                :type git
                :url "git://github.com/jonathanchu/emacs-powerline.git"
                :features "powerline")
+        (:name ruby-tools
+               :type elpa
+               :features "ruby-tools")
         (:name window-number
                :type elpa
                :after (progn
@@ -69,10 +72,12 @@
 (el-get-install "powerline")
 (el-get-install "rainbow-mode")
 (el-get-install "ri-emacs")
-(el-get-install "rinari")
+;; (el-get-install "rinari")
 (el-get-install "ruby-compilation")
 (el-get-install "ruby-mode")
+(el-get-install "ruby-end")
 (el-get-install "ruby-test-mode")
+(el-get-install "ruby-tools")
 (el-get-install "rvm")
 (el-get-install "sass-mode")
 (el-get-install "window-number")
@@ -95,8 +100,9 @@
 
 (defun jon-ruby-hook ()
   (esk-run-coding-hook)
-  (add-to-list (make-local-variable 'paredit-space-for-delimiter-predicates)
-               (lambda (_ _) nil))
+  (electric-pair-mode)
+  (ruby-end-mode t)
+  (ruby-tools-mode t)
   (subword-mode)
   (set (make-local-variable 'compile-command)
        (concat "rubocop -es "
