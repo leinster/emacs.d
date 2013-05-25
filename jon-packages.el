@@ -29,6 +29,9 @@
         (:name less-css-mode
                :type elpa
                :features "less-css-mode")
+        (:name window-number
+               :type elpa
+               :features "window-number")
         (:name csv-mode
                :type elpa
                :after (progn
@@ -63,6 +66,7 @@
 (el-get-install "paredit")
 (el-get-install "php-mode")
 (el-get-install "go-mode")
+(el-get-install "window-number")
 
 ;; install is broken
 ;; (el-get-install "emacs-goodies-el")
