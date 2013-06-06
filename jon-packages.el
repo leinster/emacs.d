@@ -50,7 +50,6 @@
                :features "window-number")
         ))
 
-(el-get-install "autopair")
 (el-get-install "coffee-mode")
 (el-get-install "csv-mode")
 (el-get-install "deft")
@@ -118,7 +117,6 @@
 
 (defun jon-js-hook ()
   (esk-run-coding-hook)
-  (autopair-mode)
   (subword-mode)
   (define-key js-mode-map (kbd ",") 'self-insert-command)
   (local-set-key "\C-xq" 'jon-search-mdc-for-thing-at-point)
@@ -147,7 +145,7 @@
 ;;; haml-mode
 (defun jon-haml-mode-hook ()
   "haml-mode-hook"
-  (autopair-mode)
+  (electric-pair-mode)
   (visual-line-mode))
 (add-hook 'haml-mode-hook 'jon-haml-mode-hook)
 
@@ -157,7 +155,7 @@
   (set (make-local-variable 'tab-width) 2)
   (coffee-cos-mode t)
   (setq coffee-js-mode 'js-mode)
-  (autopair-mode))
+  (electric-pair-mode))
 (add-hook 'coffee-mode-hook 'jon-coffee-mode-hook)
 
 ;;; emacs lisp
@@ -170,7 +168,7 @@
 (defun jon-php-hook ()
   (setq c-basic-offset 4)
   (esk-run-coding-hook)
-  (autopair-mode)
+  (electric-pair-mode)
   (subword-mode))
 (add-hook 'php-mode-hook 'jon-php-hook)
 
@@ -181,7 +179,7 @@
 (defun jon-css-hook ()
   (setq css-indent-offset 2)
   (esk-run-coding-hook)
-  (autopair-mode)
+  (electric-pair-mode)
   (subword-mode)
   (rainbow-mode))
 (add-hook 'css-mode-hook 'jon-css-hook)
@@ -196,7 +194,7 @@
 
 ;;; haskell
 (defun jon-haskell-hook ()
-    (autopair-mode))
+    (electric-pair-mode))
 (add-hook 'haskell-mode-hook 'jon-haskell-hook)
 
 ;;; magit
