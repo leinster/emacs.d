@@ -11,6 +11,7 @@
 (global-set-key "\C-cu" 'browse-url-at-point)
 (global-set-key "\C-cv" 'jon-switch-to-vm-shell)
 (global-set-key "\C-cw" 'jon-copy-filename-to-kill-ring)
+(global-set-key "\C-c+" 'calculator)
 (global-set-key `[(control meta tab)] 'indent-rigidly)
 
 (if (fboundp 'mc/mark-next-like-this)
