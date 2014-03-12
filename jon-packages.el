@@ -1,91 +1,66 @@
+(require 'package)
+(add-to-list 'package-archives
+  '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
 
-(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
-(unless (require 'el-get nil 'noerror)
-  (with-current-buffer
-      (url-retrieve-synchronously
-       "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
-    (goto-char (point-max))
-    (eval-print-last-sexp)))
+;; https://github.com/zenspider/package
+(unless (package-installed-p 'package+)
+  (package-install 'package+))
 
-(setq el-get-sources
-      '(
-        (:name csv-mode
-               :type elpa
-               :after (progn
-                        (autoload 'csv-mode "csv-mode" "Major mode for editing CSV files" t)))
-        (:name deft
-               :after (progn
-                        (setq deft-extension "md"
-                              deft-text-mode 'markdown-mode)))
-        (:name grep-edit
-               :type http
-               :url "http://emacswiki.org/emacs/download/grep-edit.el"
-               :features "grep-edit")
-        (:name less-css-mode
-               :type elpa
-               :features "less-css-mode")
-        (:name markdown-mode
-               :after (progn
-                        (setq markdown-command "~/SE/scripts/markitup")))
-        (:name multiple-cursors
-               :type elpa
-               :features "multiple-cursors")
-        (:name mustache-mode
-               :after (progn
-                        (add-to-list 'auto-mode-alist '("\\.mustache$" . mustache-mode))))
-        (:name powerline
-               :type git
-               :url "git://github.com/jonathanchu/emacs-powerline.git"
-               :features "powerline")
-        (:name ruby-tools
-               :type elpa
-               :features "ruby-tools")
-        (:name window-number
-               :type elpa
-               :after (progn
-                        (load-library "window-number")
-                        (window-number-mode t)
-                        (window-number-meta-mode t))
-               :features "window-number")
-        ))
+(package-manifest
+ 'csv-mode
+ 'deft
+ 'fill-column-indicator
+ 'haml-mode
+ 'heroku-theme
+ 'inf-ruby
+ 'jabber
+ 'less-css-mode
+ 'magit
+ 'markdown-mode
+ 'markdown-mode+
+ 'mustache-mode
+ 'package+
+ 'paredit
+ 'php-mode
+ 'powerline
+ 'ruby-compilation
+ 'ruby-end
+ 'ruby-test-mode
+ 'ruby-tools
+ 'sublime-themes
+ 'web-mode
+ 'window-number
+ 'yaml-mode
+ 'yasnippet
+ 'zenburn-theme
+ )
 
-(el-get-install "coffee-mode")
-(el-get-install "csv-mode")
-(el-get-install "deft")
-(el-get-install "emacs-jabber")
-(el-get-install "go-mode")
-(el-get-install "grep-edit")
-(el-get-install "haml-mode")
-(el-get-install "haskell-mode")
-(el-get-install "idle-highlight-mode")
-(el-get-install "inf-ruby")
-(el-get-install "less-css-mode")
-(el-get-install "magit")
-(el-get-install "magithub")
-(el-get-install "markdown-mode")
-(el-get-install "multiple-cursors")
-(el-get-install "mustache-mode")
-(el-get-install "paredit")
-(el-get-install "php-mode")
-(el-get-install "powerline")
-(el-get-install "rainbow-mode")
-(el-get-install "ri-emacs")
-;; (el-get-install "rinari")
-(el-get-install "ruby-compilation")
-(el-get-install "ruby-mode")
-(el-get-install "ruby-end")
-(el-get-install "ruby-test-mode")
-(el-get-install "ruby-tools")
-(el-get-install "rvm")
-(el-get-install "sass-mode")
-(el-get-install "window-number")
-(el-get-install "yaml-mode")
+(eval-after-load "markdown-mode"
+  '(progn
+     (add-to-list 'auto-mode-alist '("[Tt][Oo][Dd][Oo]" . gfm-mode))
+     (add-to-list 'auto-mode-alist '("\\.markdown\\'" . gfm-mode))
+     (add-to-list 'auto-mode-alist '("\\.md\\'" . gfm-mode))))
 
-;; install is broken
-;; (el-get-install "emacs-goodies-el")
+(eval-after-load "mustache-mode"
+  '(add-to-list 'auto-mode-alist '("\\.mustache$" . mustache-mode)))
 
-(el-get 'sync)
+(eval-after-load "powerline"
+  '(powerline-center-theme))
+
+(require 'window-number)
+(window-number-mode t)
+
+;;; packages I might want to reinstall
+;;; emacs-goodies - unavailable?
+;;; coffee-mode
+;;; go-mode
+;;; haskell-mode
+;;; idle-highlight-mode
+;;; sass-mode
+;;; rvm
+;;; rainbow-mode
+;;; (yas-global-mode 1) - yasnippet config
 
 ;;; ruby
 (add-to-list 'auto-mode-alist '("\\.rake$" . ruby-mode))
@@ -112,8 +87,8 @@
 (add-to-list 'auto-mode-alist '("\\.json$" . js-mode))
 
 ;; matches jshint output
-(add-to-list 'compilation-error-regexp-alist
-             '("^\\(- \\)?\\([^:\n\" ]+\\): line \\([0-9]+\\), col \\([0-9]+\\)" 2 3 4))
+;; (add-to-list 'compilation-error-regexp-alist
+;;              '("^\\(- \\)?\\([^:\n\" ]+\\): line \\([0-9]+\\), col \\([0-9]+\\)" 2 3 4))
 
 (defun jon-js-hook ()
   (esk-run-coding-hook)
@@ -128,7 +103,7 @@
                (file-name-nondirectory (buffer-file-name (current-buffer)))))
   (set (make-local-variable 'compilation-read-command) nil))
 (add-hook 'js-mode-hook 'jon-js-hook)
-(add-hook 'js-mode-hook 'jon-greek-lambda)
+;; (remove-hook 'js-mode-hook 'jon-greek-lambda)
 
 (eval-after-load 'js
   '(progn
@@ -194,17 +169,11 @@
 
 ;;; haskell
 (defun jon-haskell-hook ()
-    (electric-pair-mode))
+    (electric-pair-mode)
+    (turn-on-haskell-indentation))
 (add-hook 'haskell-mode-hook 'jon-haskell-hook)
-
-;;; magit
-(eval-after-load 'magit
-  '(progn
-     (set-face-foreground 'magit-diff-add "green3")
-     (set-face-foreground 'magit-diff-del "red3")))
-
-;;; markdown-mode for todos
-(add-to-list 'auto-mode-alist '("[Tt][Oo][Dd][Oo]" . markdown-mode))
+(push '("\\.hs$" . haskell-mode)  auto-mode-alist)
+;; (assoc "\\.hs$" auto-mode-alist)
 
 ;;; ssh
 (autoload 'ssh "ssh" "SSH" t)
@@ -218,10 +187,6 @@
 
 ;;; sql
 (add-to-list 'auto-mode-alist '("\\.sql$" . sql-mode))
-
-;;; windmove (shift-arrow to switch windows)
-(require 'windmove)
-(windmove-default-keybindings)
 
 ;;; go-mode
 (defun jon-go-mode-hook ()
