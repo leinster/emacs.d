@@ -1,8 +1,10 @@
 .emacs.desktop*
 backups
 custom.el
-el-get
+elpa
+eshell
 recentf
+tramp
 auto-save-list
 /.mc-lists.el
 /url/cookies
