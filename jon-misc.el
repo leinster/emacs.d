@@ -21,7 +21,6 @@
 (global-auto-revert-mode t)
 (line-number-mode t)
 (column-number-mode t)
-(windmove-default-keybindings)
 ;; (global-whitespace-mode t)
 (winner-mode t)
 
@@ -87,6 +86,33 @@
       jabber-use-global-history nil
       jabber-account-list '(("jonathon.ramsey@gmail.com"
                              (:network-server . "talk.google.com")
+                             (:port . 443)
+                             (:connection-type . ssl))
+                            ("48924_329713@chat.hipchat.com"
+                             (:network-server . "chat.hipchat.com")
                              (:connection-type . ssl))))
+
+;;; jabber keybindings
+(eval-after-load 'jabber-chat
+  '(define-key jabber-chat-mode-map (kbd "C-c m") 'hipchat-mention))
+
+;; https://gist.github.com/pufuwozu/4002033
+;; get hipchat id from settings https://sealedenvelope.hipchat.com/account/xmpp
+(defvar hipchat-number "48924")
+(defvar hipchat-email (concat hipchat-number "_sealed_envelope@conf.hipchat.com"))
+(defvar hipchat-nickname "Jon Ramsey")
+(defun hipchat-se ()
+  (interactive)
+  (jabber-groupchat-join
+   (jabber-read-account)
+   hipchat-email
+   hipchat-nickname
+   t))
+(defun hipchat-mention (nickname)
+  (interactive
+   (list (jabber-muc-read-nickname jabber-group "Nickname: ")))
+  (insert (concat "@" (replace-regexp-in-string " " "" nickname) " ")))
+(defun hipchat-alert (sound)
+  (call-process "afplay" nil t nil "/System/Library/Sounds/Submarine.aiff"))
 
 (provide 'jon-misc)
