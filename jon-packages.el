@@ -23,7 +23,6 @@
  'package+
  'paredit
  'php-mode
- 'powerline
  'ruby-compilation
  'ruby-end
  'ruby-test-mode
@@ -44,9 +43,6 @@
 
 (eval-after-load "mustache-mode"
   '(add-to-list 'auto-mode-alist '("\\.mustache$" . mustache-mode)))
-
-(eval-after-load "powerline"
-  '(powerline-center-theme))
 
 (require 'window-number)
 (window-number-mode t)
