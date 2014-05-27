@@ -147,6 +147,12 @@
   (subword-mode))
 (add-hook 'php-mode-hook 'jon-php-hook)
 
+;;; web-mode
+(defun jon-web-mode-hook ()
+  (setq web-mode-code-indent-offset 4)
+  (subword-mode))
+(add-hook 'web-mode-hook 'jon-web-mode-hook)
+
 ;;; css, sass, less
 (add-to-list 'auto-mode-alist '("\\.scss$" . sass-mode))
 (add-to-list 'auto-mode-alist '("\\.less$" . less-css-mode))
