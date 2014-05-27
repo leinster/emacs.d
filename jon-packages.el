@@ -44,6 +44,9 @@
 (eval-after-load "mustache-mode"
   '(add-to-list 'auto-mode-alist '("\\.mustache$" . mustache-mode)))
 
+(eval-after-load "web-mode"
+  '(add-to-list 'auto-mode-alist '("\\.html$" . web-mode)))
+
 (require 'window-number)
 (window-number-mode t)
 
@@ -146,7 +149,8 @@
 ;;; web-mode
 (defun jon-web-mode-hook ()
   (setq web-mode-code-indent-offset 4)
-  (subword-mode))
+  (subword-mode)
+  (electric-pair-mode -1))
 (add-hook 'web-mode-hook 'jon-web-mode-hook)
 
 ;;; css, sass, less
