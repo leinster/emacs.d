@@ -149,10 +149,11 @@
 
 ;;; ----------------------------------------------------------------
 ;; emacs-lisp
-(defun jon-emacs-lisp-mode-hook ()
-  (require 'paredit)
-  (enable-paredit-mode))
-(add-hook 'emacs-lisp-mode-hook 'jon-emacs-lisp-mode-hook)
+(after 'paredit-autoloads
+  (defun jon-emacs-lisp-mode-paredit-hook ()
+    (require 'paredit)
+    (enable-paredit-mode))
+  (add-hook 'emacs-lisp-mode-hook 'jon-emacs-lisp-mode-paredit-hook))
 
 ;;; ----------------------------------------------------------------
 ;;; flyspell
@@ -185,9 +186,10 @@
 ;; javascript
 (after 'js2-mode-autoloads
        (jon-add-to-auto-mode-alist '("\\.js\\'")
-                                   'js2-mode)
-       (require #'js2-refactor))
+                                   'js2-mode))
 
+(after 'js2-refactor-autoloads
+  (require #'js2-refactor))
 (after 'js2-refactor
        (js2r-add-keybindings-with-prefix "C-c C-r"))
 
