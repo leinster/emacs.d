@@ -97,6 +97,7 @@
     rainbow-mode
     ruby-end
     ruby-tools
+    smex
     sublime-themes
     web-mode
     window-number
@@ -143,6 +144,9 @@
                                    'mustache-mode))
 (after 'rainbow-delimiters-autoloads
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+(after 'smex-autoloads
+  (global-set-key (kbd "M-x") 'smex)
+  (global-set-key (kbd "M-X") 'smex-major-mode-commands))
 (after 'window-number-autoloads
        (require 'window-number)
        (window-number-mode t)
