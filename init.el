@@ -61,6 +61,9 @@
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 
+(require 'saveplace)
+(setq-default save-place t)
+
 (dolist (f '(try-expand-line try-expand-list try-complete-file-name-partially))
   (delete f hippie-expand-try-functions-list))
 (add-to-list 'hippie-expand-try-functions-list 'try-complete-file-name-partially t)
