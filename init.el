@@ -1,3 +1,7 @@
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+
 (setq dotfiles-dir (file-name-directory
 		    (or (buffer-file-name) load-file-name)))
 (setq custom-file (concat dotfiles-dir "custom.el"))
@@ -12,12 +16,7 @@
 (load "server")
 (unless (server-running-p) (server-start))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; misc
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
 (tooltip-mode -1)
-(menu-bar-mode t)
 (show-paren-mode t)
 
 (setq
