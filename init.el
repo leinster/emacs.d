@@ -244,7 +244,12 @@
 (add-hook 'ruby-mode-hook 'ruby-tools-mode)
 
 ;;; ----------------------------------------------------------------
-;; shell
+;; shell mode
+(add-hook 'shell-mode-hook 'jon-run-coding-hook)
+(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+
+;;; ----------------------------------------------------------------
+;; shell scripts
 (defun jon-sh-mode-hook ()
   (setq sh-basic-offset 2
         sh-indentation 2))
@@ -372,10 +377,17 @@ new shell if required, and set `jon-shell-buffer'."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; system specific
-(cond
- (window-system
+(when window-system
   (progn
+    (jon-use-desktop)
     (load-theme 'whiteboard)
-    (jon-use-desktop)))
- (t
-  (menu-bar-mode -1)))
+    (setq ansi-color-names-vector
+          ["black"
+           "firebrick"
+           "DarkGreen"
+           "DarkGoldenrod3"
+           "navy"
+           "DarkOrchid"
+           "SteelBlue"
+           "white"])
+    (setq ansi-color-map (ansi-color-make-color-map))))
