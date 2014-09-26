@@ -310,6 +310,14 @@ new shell if required, and set `jon-shell-buffer'."
   (kill-new (buffer-file-name))
   (message "%s" (buffer-file-name)))
 
+(defun finder ()
+  "Open current working directory in finder."
+  (interactive)
+  (let ((cmd (if (eq system-type 'darwin)
+                 "open"
+               "xdg-open")))
+    (shell-command (concat cmd " " (shell-quote-argument default-directory)))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; keybindings
 (global-set-key (kbd "M-/") 'hippie-expand)
@@ -323,7 +331,7 @@ new shell if required, and set `jon-shell-buffer'."
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key "\C-cc" 'compile)
 (global-set-key "\C-cd" 'deft)
-(global-set-key "\C-cf" 'font-lock-fontify-buffer)
+(global-set-key "\C-cf" 'finder)
 (global-set-key "\C-cg" 'rgrep)
 (global-set-key "\C-co" 'occur)
 (global-set-key "\C-cs" 'jon-switch-to-shell)
