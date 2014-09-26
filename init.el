@@ -247,6 +247,7 @@
 ;; shell mode
 (add-hook 'shell-mode-hook 'jon-run-coding-hook)
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+(add-hook 'shell-mode-hook 'visual-line-mode)
 
 ;;; ----------------------------------------------------------------
 ;; shell scripts
@@ -320,7 +321,9 @@ new shell if required, and set `jon-shell-buffer'."
   (let ((cmd (if (eq system-type 'darwin)
                  "open"
                "xdg-open")))
-    (shell-command (concat cmd " " (shell-quote-argument default-directory)))))
+    (shell-command (concat cmd " "
+                           (shell-quote-argument
+                            (expand-file-name default-directory))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; keybindings
