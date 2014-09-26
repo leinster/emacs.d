@@ -188,8 +188,11 @@
 ;;; ----------------------------------------------------------------
 ;; javascript
 (after 'js2-mode-autoloads
-       (jon-add-to-auto-mode-alist '("\\.js\\'")
-                                   'js2-mode))
+       (jon-add-to-auto-mode-alist '("\\.js\\'") 'js2-mode)
+       (setq-default js2-basic-offset 2
+                     js2-concat-multiline-strings 'eol
+                     js2-include-node-externs t
+                     js2-skip-preprocessor-directives t))
 
 (after 'js2-refactor-autoloads
   (require #'js2-refactor))
