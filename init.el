@@ -93,6 +93,7 @@
     mustache-mode
     paredit
     php-mode
+    rainbow-delimiters
     rainbow-mode
     ruby-end
     ruby-tools
@@ -140,6 +141,8 @@
 (after 'mustache-mode-autoloads
        (jon-add-to-auto-mode-alist '("\\.mustache$")
                                    'mustache-mode))
+(after 'rainbow-delimiters-autoloads
+  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 (after 'window-number-autoloads
        (require 'window-number)
        (window-number-mode t)
