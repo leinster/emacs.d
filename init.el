@@ -3,7 +3,11 @@
 
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
-;; (menu-bar-mode -1)
+
+(defconst jon-is-mac (eq system-type 'darwin) "Is this a mac?")
+(defconst jon-open (if jon-is-mac
+                       "open"
+                     "xdg-open"))
 
 (setq dotfiles-dir (file-name-directory
 		    (or (buffer-file-name) load-file-name)))
@@ -165,7 +169,8 @@
   (setq-default TeX-PDF-mode t
                 TeX-engine 'luatex)
   (setq TeX-view-program-selection '((output-pdf "PDF Viewer"))
-        TeX-view-program-list '(("PDF Viewer" "open %o"))))
+        TeX-view-program-list `(("PDF Viewer"
+                                 (concat ,jon-open " %o")))))
 
 ;;; ----------------------------------------------------------------
 ;; deft
@@ -352,12 +357,9 @@ new shell if required, and set `jon-shell-buffer'."
 (defun finder ()
   "Open current working directory in finder."
   (interactive)
-  (let ((cmd (if (eq system-type 'darwin)
-                 "open"
-               "xdg-open")))
-    (shell-command (concat cmd " "
+  (shell-command (concat jon-open " "
                            (shell-quote-argument
-                            (expand-file-name default-directory))))))
+                            (expand-file-name default-directory)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; keybindings
@@ -428,3 +430,6 @@ new shell if required, and set `jon-shell-buffer'."
            "SteelBlue"
            "white"])
     (setq ansi-color-map (ansi-color-make-color-map))))
+
+(when (not window-system)
+  (menu-bar-mode -1))
