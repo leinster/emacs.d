@@ -1,3 +1,6 @@
+;;; to open a new emacs with current init
+;;;     $ open -n -a Emacs.app
+
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 (menu-bar-mode -1)
@@ -77,6 +80,7 @@
 (defvar jon-required-packages
   '(csv-mode
     deft
+    exec-path-from-shell
     fill-column-indicator
     flycheck
     haml-mode
@@ -133,9 +137,6 @@
 (defun jon-run-coding-hook ()
   (run-hooks 'jon-coding-hook))
 
-(after 'deft-autoloads
-  (setq deft-extension "md"
-        deft-text-mode 'gfm-mode))
 (after 'markdown-mode-autoloads
        (jon-add-to-auto-mode-alist '("[Tt][Oo][Dd][Oo]"
                                      "\\.markdown\\'"
@@ -155,6 +156,26 @@
        (window-number-meta-mode t))
 (after 'yasnippet-autoloads
        (yas-global-mode 1))
+
+;;; ----------------------------------------------------------------
+;; deft
+(after 'deft-autoloads
+  (setq deft-extension "md"
+        deft-text-mode 'gfm-mode))
+
+;;; ----------------------------------------------------------------
+;; set $PATH, $MANPATH, and exec-path from shell, mac only
+(after 'exec-path-from-shell-autoloads
+  (when (memq window-system '(mac ns))
+    (progn
+      (require 'exec-path-from-shell)
+      (dolist (var '("SSH_AUTH_SOCK"
+                     "SSH_AGENT_PID"
+                     "GPG_AGENT_INFO"
+                     "LANG"
+                     "LC_CTYPE"))
+        (add-to-list 'exec-path-from-shell-variables var))
+      (exec-path-from-shell-initialize))))
 
 ;;; ----------------------------------------------------------------
 ;; emacs-lisp
