@@ -166,11 +166,18 @@
 ;;; ----------------------------------------------------------------
 ;; auctex
 (after 'auctex-autoloads
+  (add-to-list 'TeX-engine-alist
+               '(luatex
+                 "LuaTeX"
+                 "luatex"
+                 "lualatex --synctex=1 --jobname=%s" ; need this for Skim
+                 "luatex"))
   (setq-default TeX-PDF-mode t
                 TeX-engine 'luatex)
-  (setq TeX-view-program-selection '((output-pdf "PDF Viewer"))
-        TeX-view-program-list `(("PDF Viewer"
-                                 (concat ,jon-open " %o")))))
+  (setq TeX-view-program-selection '((output-pdf "Skim"))
+        TeX-view-program-list
+        `(("Skim"
+           "/Applications/Skim.app/Contents/SharedSupport/displayline -background %n %o %b"))))
 
 ;;; ----------------------------------------------------------------
 ;; deft
