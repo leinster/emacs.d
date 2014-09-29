@@ -78,7 +78,8 @@
 (package-initialize)
 
 (defvar jon-required-packages
-  '(csv-mode
+  '(auctex
+    csv-mode
     deft
     exec-path-from-shell
     fill-column-indicator
@@ -156,6 +157,14 @@
        (window-number-meta-mode t))
 (after 'yasnippet-autoloads
        (yas-global-mode 1))
+
+;;; ----------------------------------------------------------------
+;; auctex
+(after 'auctex-autoloads
+  (setq-default TeX-PDF-mode t
+                TeX-engine 'luatex)
+  (setq TeX-view-program-selection '((output-pdf "PDF Viewer"))
+        TeX-view-program-list '(("PDF Viewer" "open %o"))))
 
 ;;; ----------------------------------------------------------------
 ;; deft
