@@ -133,6 +133,9 @@
 (defun jon-run-coding-hook ()
   (run-hooks 'jon-coding-hook))
 
+(after 'deft-autoloads
+  (setq deft-extension "md"
+        deft-text-mode 'gfm-mode))
 (after 'markdown-mode-autoloads
        (jon-add-to-auto-mode-alist '("[Tt][Oo][Dd][Oo]"
                                      "\\.markdown\\'"
