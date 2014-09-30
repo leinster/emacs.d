@@ -456,5 +456,19 @@ new shell if required, and set `jon-shell-buffer'."
 (when *is-a-mac*
   (progn
     (global-set-key (kbd "s-_") 'ns-do-hide-others)
+    (when window-system
+      (set-face-attribute
+       'default
+       nil
+       :family "Inconsolata"
+       :height 135
+       :weight 'normal)
+      ;; (set-face-attribute
+      ;;  'default
+      ;;  nil
+      ;;  :family "Monaco"
+      ;;  :height 120
+      ;;  :weight 'normal)
+      )
     (when (fboundp 'toggle-frame-fullscreen)
       (global-set-key (kbd "s-f") 'toggle-frame-fullscreen))))
