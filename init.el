@@ -69,6 +69,11 @@
 (put 'downcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
 
+;;; isearch
+(define-key isearch-mode-map (kbd "C-o") 'isearch-occur)
+(define-key isearch-mode-map [remap isearch-delete-char] 'isearch-del-char)
+
+
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 
