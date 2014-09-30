@@ -143,9 +143,11 @@
   `(eval-after-load ,mode
      '(progn ,@body)))
 
-(defun jon-add-to-auto-mode-alist (regex-list mode)
-  (dolist (regex regex-list)
-    (add-to-list 'auto-mode-alist (cons regex mode))))
+;;; https://github.com/purcell/emacs.d/
+(defun add-auto-mode (mode &rest patterns)
+  "Add entries to `auto-mode-alist' for `MODE' for all `PATTERNS'."
+  (dolist (pattern patterns)
+    (add-to-list 'auto-mode-alist (cons pattern mode))))
 
 (defvar jon-coding-hook nil "Common")
 (add-hook 'jon-coding-hook 'subword-mode)
@@ -154,13 +156,12 @@
   (run-hooks 'jon-coding-hook))
 
 (after 'markdown-mode-autoloads
-       (jon-add-to-auto-mode-alist '("[Tt][Oo][Dd][Oo]"
-                                     "\\.markdown\\'"
-                                     "\\.md\\'")
-                                   'gfm-mode))
+       (add-auto-mode 'gfm-mode
+                      "[Tt][Oo][Dd][Oo]"
+                      "\\.markdown\\'"
+                      "\\.md\\'"))
 (after 'mustache-mode-autoloads
-       (jon-add-to-auto-mode-alist '("\\.mustache$")
-                                   'mustache-mode))
+  (add-auto-mode 'mustache-mode "\\.mustache$"))
 (after 'rainbow-delimiters-autoloads
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 (after 'smex-autoloads
@@ -247,7 +248,7 @@
 ;;; ----------------------------------------------------------------
 ;; javascript
 (after 'js2-mode-autoloads
-       (jon-add-to-auto-mode-alist '("\\.js\\'") 'js2-mode)
+       (add-auto-mode 'js2-mode "\\.js\\'")
        (setq-default js2-basic-offset 2
                      js2-concat-multiline-strings 'eol
                      js2-include-node-externs t
@@ -278,8 +279,7 @@
 ;;; ----------------------------------------------------------------
 ;; php
 (after 'php-mode-autoloads
-       (jon-add-to-auto-mode-alist '("\\.php\\'")
-                                   'php-mode))
+       (add-auto-mode 'php-mode "\\.php\\'"))
 (defun jon-php-mode-hook ()
   (setq c-basic-offset 4))
 (add-hook 'php-mode-hook 'jon-run-coding-hook)
@@ -287,14 +287,14 @@
 
 ;;; ----------------------------------------------------------------
 ;; ruby
-(jon-add-to-auto-mode-alist '("\\.rake$"
-                              "\\.gemspec$"
-                              "\\.ru$"
-                              "\\.pill$"
-                              "\\.erb$"
-                              "Rakefile$"
-                              "Gemfile$")
-                            'ruby-mode)
+(add-auto-mode 'ruby-mode
+               "\\.rake$"
+               "\\.gemspec$"
+               "\\.ru$"
+               "\\.pill$"
+               "\\.erb$"
+               "Rakefile$"
+               "Gemfile$")
 (add-hook 'ruby-mode-hook 'jon-run-coding-hook)
 (add-hook 'ruby-mode-hook 'ruby-end-mode)
 (add-hook 'ruby-mode-hook 'ruby-tools-mode)
@@ -320,9 +320,9 @@
 ;;; ----------------------------------------------------------------
 ;; web mode
 (after 'web-mode-autoloads
-       (jon-add-to-auto-mode-alist '("\\.html$"
-                                     "\\.css$")
-                                   'web-mode))
+  (add-auto-mode 'web-mode
+                 "\\.html$"
+                 "\\.css$"))
 (defun jon-web-mode-hook ()
   (rainbow-mode))
 (add-hook 'web-mode-hook 'jon-web-mode-hook)
