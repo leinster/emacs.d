@@ -177,12 +177,9 @@
 ;;; ----------------------------------------------------------------
 ;; auctex
 (after 'auctex-autoloads
-  (add-to-list 'TeX-engine-alist
-               '(luatex
-                 "LuaTeX"
-                 "luatex"
-                 "lualatex --synctex=1 --jobname=%s" ; need this for Skim
-                 "luatex"))
+  ;; TeX-engine-alist is set with customize to:
+  ;; '((luatex "LuaTeX" "luatex" "lualatex --synctex=1 --jobname=%s" "synctex"))
+  ;; luatex param is required for Skim integration
   (setq-default TeX-PDF-mode t
                 TeX-engine 'luatex)
   (setq TeX-view-program-selection '((output-pdf "Skim"))
