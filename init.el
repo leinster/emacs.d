@@ -191,7 +191,8 @@
 ;; deft
 (after 'deft-autoloads
   (setq deft-extension "md"
-        deft-text-mode 'gfm-mode))
+        deft-text-mode 'gfm-mode
+        deft-auto-save-interval 0))
 
 ;;; ----------------------------------------------------------------
 ;; set $PATH, $MANPATH, and exec-path from shell, mac only
