@@ -28,9 +28,14 @@
 
 (setq
  inhibit-startup-screen t
+ indicate-empty-lines t
+ use-file-dialog nil
+ use-dialog-box nil
+
  user-full-name "Jonathon Ramsey"
  user-mail-address "jonathon.ramsey@gmail.com"
  mail-default-reply-to "jonathon.ramsey@gmail.com"
+
  backup-directory-alist (quote (("." . "~/.emacs.d/backups")))
 
  mouse-yank-at-point t
