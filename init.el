@@ -4,8 +4,8 @@
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 
-(defconst jon-is-mac (eq system-type 'darwin) "Is this a mac?")
-(defconst jon-open (if jon-is-mac
+(defconst *is-a-mac* (eq system-type 'darwin) "Is this a mac?")
+(defconst jon-open (if *is-a-mac*
                        "open"
                      "xdg-open"))
 
@@ -375,6 +375,12 @@ new shell if required, and set `jon-shell-buffer'."
                            (shell-quote-argument
                             (expand-file-name default-directory)))))
 
+(defun maybe-suspend-frame ()
+  (interactive)
+  (unless (and *is-a-mac* window-system)
+    (suspend-frame)))
+(global-set-key (kbd "C-z") 'maybe-suspend-frame)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; keybindings
 (global-set-key (kbd "M-/") 'hippie-expand)
@@ -446,3 +452,9 @@ new shell if required, and set `jon-shell-buffer'."
 
 (when (not window-system)
   (menu-bar-mode -1))
+
+(when *is-a-mac*
+  (progn
+    (global-set-key (kbd "s-_") 'ns-do-hide-others)
+    (when (fboundp 'toggle-frame-fullscreen)
+      (global-set-key (kbd "s-f") 'toggle-frame-fullscreen))))
