@@ -436,7 +436,6 @@ new shell if required, and set `jon-shell-buffer'."
 (when window-system
   (progn
     (jon-use-desktop)
-    (load-theme 'whiteboard)
     (setq ansi-color-names-vector
           ["black"
            "firebrick"
