@@ -454,22 +454,30 @@ new shell if required, and set `jon-shell-buffer'."
 (when (not window-system)
   (menu-bar-mode -1))
 
+(defun jon-font-inconsolata ()
+  (interactive)
+  (jon-set-font "Inconsolata" 135))
+
+(defun jon-font-monaco ()
+  (interactive)
+  (jon-set-font "Monaco" 120))
+
+(defun jon-font-source-code-pro ()
+  (interactive)
+  (jon-set-font "Source Code Pro" 120))
+
+(defun jon-set-font (face height)
+  (set-face-attribute
+   'default
+   nil
+   :family face
+   :height height
+   :weight 'normal))
+
 (when *is-a-mac*
   (progn
     (global-set-key (kbd "s-_") 'ns-do-hide-others)
     (when window-system
-      (set-face-attribute
-       'default
-       nil
-       :family "Inconsolata"
-       :height 135
-       :weight 'normal)
-      ;; (set-face-attribute
-      ;;  'default
-      ;;  nil
-      ;;  :family "Monaco"
-      ;;  :height 120
-      ;;  :weight 'normal)
-      )
+      (jon-font-monaco))
     (when (fboundp 'toggle-frame-fullscreen)
       (global-set-key (kbd "s-f") 'toggle-frame-fullscreen))))
