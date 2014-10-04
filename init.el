@@ -122,6 +122,7 @@
     sublime-themes
     web-mode
     window-number
+    w3m
     yaml-mode
     yasnippet
     zenburn-theme
@@ -376,6 +377,29 @@ new shell if required, and set `jon-shell-buffer'."
   (interactive)
   (kill-new (buffer-file-name))
   (message "%s" (buffer-file-name)))
+
+(defun jon-se-docs ()
+  (interactive)
+  (w3m-browse-url "http://se_www/doc"))
+
+(defun jon-open-se-doc-src ()
+  (interactive)
+  (find-file-other-window
+   (expand-file-name
+    (concat
+     "~/SE/www/content"
+     (substring (cadr (split-string w3m-current-url "se_www")) 0 -1)
+     ".markdown"))))
+
+(defun jon-open-se-doc-page ()
+  (interactive)
+  (w3m-browse-url
+   (concat
+    "http://se_www/"
+    (replace-regexp-in-string
+     ".markdown"
+     "/"
+     (cadr (split-string (buffer-file-name) "/content/"))))))
 
 (defun finder ()
   "Open current working directory in finder."
