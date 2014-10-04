@@ -170,9 +170,9 @@
   (global-set-key (kbd "M-x") 'smex)
   (global-set-key (kbd "M-X") 'smex-major-mode-commands))
 (after 'window-number-autoloads
-       (require 'window-number)
-       (window-number-mode t)
-       (window-number-meta-mode t))
+  (require 'window-number)
+  (window-number-mode t)
+  (window-number-meta-mode t))
 (after 'yasnippet-autoloads
        (yas-global-mode 1))
 
@@ -374,9 +374,10 @@ new shell if required, and set `jon-shell-buffer'."
 (defun finder ()
   "Open current working directory in finder."
   (interactive)
-  (shell-command (concat jon-open " "
-                           (shell-quote-argument
-                            (expand-file-name default-directory)))))
+  (shell-command
+   (concat jon-open " "
+           (shell-quote-argument
+            (expand-file-name default-directory)))))
 
 (defun maybe-suspend-frame ()
   (interactive)
