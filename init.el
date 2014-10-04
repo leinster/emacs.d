@@ -382,6 +382,12 @@ new shell if required, and set `jon-shell-buffer'."
     (suspend-frame)))
 (global-set-key (kbd "C-z") 'maybe-suspend-frame)
 
+;;; http://www.emacswiki.org/emacs/ModeLineDirtrack
+(defun add-mode-line-dirtrack ()
+  (add-to-list 'mode-line-buffer-identification
+               '(:propertize (" " default-directory " ") face dired-directory)))
+(add-hook 'shell-mode-hook 'add-mode-line-dirtrack)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; keybindings
 (global-set-key (kbd "M-/") 'hippie-expand)
