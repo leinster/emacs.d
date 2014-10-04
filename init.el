@@ -364,7 +364,13 @@ new shell if required, and set `jon-shell-buffer'."
 (defun jon-switch-to-vm-shell ()
   "Switch to shell buffer `#vm`."
   (interactive)
-  (shell "#vm"))
+  (if (get-buffer "#vm")
+      (switch-to-buffer "#vm")
+    (progn
+      (shell "#vm")
+      (cd (expand-file-name "~/SE/"))
+      (comint-simple-send (get-buffer "#vm") "cd ~/SE/")
+      (comint-simple-send (get-buffer "#vm") "vm"))))
 
 (defun jon-copy-filename-to-kill-ring ()
   (interactive)
