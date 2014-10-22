@@ -186,9 +186,9 @@
   (setq-default TeX-PDF-mode t
                 TeX-engine 'luatex)
   (setq TeX-view-program-selection '((output-pdf "Skim"))
-        TeX-view-program-list
-        `(("Skim"
-           "/Applications/Skim.app/Contents/SharedSupport/displayline -background %n %o %b"))))
+        TeX-view-program-list `(("Skim"
+                                 "/Applications/Skim.app/Contents/SharedSupport/displayline -background %n %o %b"))
+        Tex-engine-alist '((luatex "LuaTeX" "luatex" "lualatex --synctex=1 --jobname=%s" "luatex"))))
 
 ;;; ----------------------------------------------------------------
 ;; deft
