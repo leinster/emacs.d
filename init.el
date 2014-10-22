@@ -3,6 +3,7 @@
 
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
+(set-fringe-mode '(1 . 1))
 
 (defconst *is-a-mac* (eq system-type 'darwin) "Is this a mac?")
 (defconst jon-open (if *is-a-mac*
