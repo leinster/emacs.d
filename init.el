@@ -52,7 +52,8 @@
  ido-mode (quote both)
  ido-create-new-buffer (quote prompt)
  ido-enable-flex-matching t
- ido-show-dot-for-dired t)
+ ido-show-dot-for-dired t
+ ido-use-filename-at-point nil)
 (ido-mode t)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
