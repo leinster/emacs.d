@@ -81,7 +81,6 @@
 (setq-default save-place t)
 
 (require 'midnight)                     ; delete old buffers automatically
-(setq midnight-mode t)
 
 (dolist (f '(try-expand-line try-expand-list try-complete-file-name-partially))
   (delete f hippie-expand-try-functions-list))
