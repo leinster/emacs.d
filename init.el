@@ -1,3 +1,6 @@
+;;; why the weird mac check in shell path thing
+;;; how to set default bash to /usr/local/bin/bash
+
 ;;; to open a new emacs with current init
 ;;;     $ open -n -a Emacs.app
 
@@ -140,12 +143,14 @@
   (package-refresh-contents)
   (mapc 'jon-install-package jon-required-packages))
 
-;; http://milkbox.net/note/single-file-master-emacs-configuration/
-(defmacro after (mode &rest body)
-  "`eval-after-load' `MODE' evaluate `BODY'."
-  (declare (indent defun))
-  `(eval-after-load ,mode
-     '(progn ,@body)))
+;;; pull in with-eval-after-load if not defined
+(unless (fboundp 'with-eval-after-load)
+  (defmacro with-eval-after-load (file &rest body)
+    "Execute BODY after FILE is loaded.
+FILE is normally a feature name, but it can also be a file name,
+in case that file does not provide any feature."
+    (declare (indent 1) (debug t))
+    `(eval-after-load ,file (lambda () ,@body))))
 
 ;;; https://github.com/purcell/emacs.d/
 (defun add-auto-mode (mode &rest patterns)
@@ -159,48 +164,55 @@
 (defun jon-run-coding-hook ()
   (run-hooks 'jon-coding-hook))
 
-(after 'markdown-mode-autoloads
-       (add-auto-mode 'gfm-mode
-                      "[Tt][Oo][Dd][Oo]"
-                      "\\.markdown\\'"
-                      "\\.md\\'"))
-(after 'mustache-mode-autoloads
+(with-eval-after-load "markdown-mode-autoloads.el"
+  (add-auto-mode 'gfm-mode
+                 "[Tt][Oo][Dd][Oo]"
+                 "\\.markdown\\'"
+                 "\\.md\\'"))
+
+(with-eval-after-load "mustache-mode-autoloads.el"
   (add-auto-mode 'mustache-mode "\\.mustache$"))
-(after 'rainbow-delimiters-autoloads
+
+(with-eval-after-load "rainbow-delimiters-autoloads.el"
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
-(after 'smex-autoloads
+
+(with-eval-after-load "smex-autoloads.el"
   (global-set-key (kbd "M-x") 'smex)
   (global-set-key (kbd "M-X") 'smex-major-mode-commands))
-(after 'window-number-autoloads
+
+(with-eval-after-load "window-number-autoloads.el"
   (require 'window-number)
   (window-number-mode t)
   (window-number-meta-mode t))
-(after 'yasnippet-autoloads
-       (yas-global-mode 1))
+
+;; (with-eval-after-load "yasnippet-autoloads.el"
+;;   (yas-global-mode 1))
 
 ;;; ----------------------------------------------------------------
 ;; auctex
-(after 'auctex-autoloads
+(with-eval-after-load "auctex-autoloads.el"
   ;; TeX-engine-alist is set with customize to:
   ;; '((luatex "LuaTeX" "luatex" "lualatex --synctex=1 --jobname=%s" "synctex"))
   ;; luatex param is required for Skim integration
   (setq-default TeX-PDF-mode t
                 TeX-engine 'luatex)
-  (setq TeX-view-program-selection '((output-pdf "Skim"))
-        TeX-view-program-list `(("Skim"
-                                 "/Applications/Skim.app/Contents/SharedSupport/displayline -background %n %o %b"))
-        Tex-engine-alist '((luatex "LuaTeX" "luatex" "lualatex --synctex=1 --jobname=%s" "luatex"))))
+  (setq TeX-view-program-selection '((output-pdf "Skim")))
+  (setq TeX-view-program-list
+        `(("Skim"
+           "/Applications/Skim.app/Contents/SharedSupport/displayline -background %n %o %b")))
+  (setq Tex-engine-alist
+        '((luatex "LuaTeX" "luatex" "lualatex --synctex=1 --jobname=%s" "luatex"))))
 
 ;;; ----------------------------------------------------------------
 ;; deft
-(after 'deft-autoloads
+(with-eval-after-load "deft-autoloads.el"
   (setq deft-extension "md"
         deft-text-mode 'gfm-mode
         deft-auto-save-interval 0))
 
 ;;; ----------------------------------------------------------------
 ;; set $PATH, $MANPATH, and exec-path from shell, mac only
-(after 'exec-path-from-shell-autoloads
+(with-eval-after-load "exec-path-from-shell-autoloads.el"
   (when (memq window-system '(mac ns))
     (progn
       (require 'exec-path-from-shell)
@@ -214,7 +226,7 @@
 
 ;;; ----------------------------------------------------------------
 ;; emacs-lisp
-(after 'paredit-autoloads
+(with-eval-after-load "paredit-autoloads.el"
   (defun jon-emacs-lisp-mode-paredit-hook ()
     (require 'paredit)
     (enable-paredit-mode))
@@ -249,17 +261,17 @@
 
 ;;; ----------------------------------------------------------------
 ;; javascript
-(after 'js2-mode-autoloads
-       (add-auto-mode 'js2-mode "\\.js\\'")
-       (setq-default js2-basic-offset 2
-                     js2-concat-multiline-strings 'eol
-                     js2-include-node-externs t
-                     js2-skip-preprocessor-directives t))
+(with-eval-after-load "js2-mode-autoloads.el"
+  (add-auto-mode 'js2-mode "\\.js\\'")
+  (setq-default js2-basic-offset 2
+                js2-concat-multiline-strings 'eol
+                js2-include-node-externs t
+                js2-skip-preprocessor-directives t))
 
-(after 'js2-refactor-autoloads
+(with-eval-after-load "js2-refactor-autoloads.el"
   (require #'js2-refactor))
-(after 'js2-refactor
-       (js2r-add-keybindings-with-prefix "C-c C-r"))
+(with-eval-after-load 'js2-refactor
+  (js2r-add-keybindings-with-prefix "C-c C-r"))
 
 (defun jon-js2-hook ()
   (set (make-local-variable 'compile-command)
@@ -269,19 +281,19 @@
 (add-hook 'js2-mode-hook 'jon-run-coding-hook)
 (add-hook 'js2-mode-hook 'jon-js2-hook)
 
-(after 'compile
-       (add-to-list 'compilation-error-regexp-alist 'se-hint)
-       (add-to-list 'compilation-error-regexp-alist-alist
-                    '(se-hint "^\\(- \\)?\\([^:\n\" ]+\\): line \\([0-9]+\\), col \\([0-9]+\\)"
-                              2              ; file path
-                              3              ; line
-                              4              ; column
-                              )))
+(with-eval-after-load 'compile
+  (add-to-list 'compilation-error-regexp-alist 'se-hint)
+  (add-to-list 'compilation-error-regexp-alist-alist
+               '(se-hint "^\\(- \\)?\\([^:\n\" ]+\\): line \\([0-9]+\\), col \\([0-9]+\\)"
+                         2              ; file path
+                         3              ; line
+                         4              ; column
+                         )))
 
 ;;; ----------------------------------------------------------------
 ;; php
-(after 'php-mode-autoloads
-       (add-auto-mode 'php-mode "\\.php\\'"))
+(with-eval-after-load "php-mode-autoloads.el"
+  (add-auto-mode 'php-mode "\\.php\\'"))
 (defun jon-php-mode-hook ()
   (setq c-basic-offset 4))
 (add-hook 'php-mode-hook 'jon-run-coding-hook)
@@ -321,7 +333,7 @@
 
 ;;; ----------------------------------------------------------------
 ;; web mode
-(after 'web-mode-autoloads
+(with-eval-after-load "web-mode-autoloads.el"
   (add-auto-mode 'web-mode
                  "\\.html$"
                  "\\.css$"))
