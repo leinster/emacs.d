@@ -1,6 +1,3 @@
-;;; why the weird mac check in shell path thing
-;;; how to set default bash to /usr/local/bin/bash
-
 ;;; to open a new emacs with current init
 ;;;     $ open -n -a Emacs.app
 
@@ -213,7 +210,7 @@ in case that file does not provide any feature."
 ;;; ----------------------------------------------------------------
 ;; set $PATH, $MANPATH, and exec-path from shell, mac only
 (with-eval-after-load "exec-path-from-shell-autoloads.el"
-  (when (memq window-system '(mac ns))
+  (when *is-a-mac*
     (progn
       (require 'exec-path-from-shell)
       (dolist (var '("SSH_AUTH_SOCK"
