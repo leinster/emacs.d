@@ -480,6 +480,7 @@ new shell if required, and set `jon-shell-buffer'."
 (when window-system
   (progn
     (jon-use-desktop)
+    (require 'ansi-color)
     (setq ansi-color-names-vector
           ["black"
            "firebrick"
