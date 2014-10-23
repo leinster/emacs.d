@@ -9,3 +9,6 @@ auto-save-list
 /.mc-lists.el
 /url/cookies
 /recentf~
+/%backup%~
+/ido.last
+/places
