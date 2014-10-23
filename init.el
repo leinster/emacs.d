@@ -97,6 +97,7 @@
 
 (defvar jon-required-packages
   '(auctex
+    bash-completion
     csv-mode
     deft
     exec-path-from-shell
@@ -181,6 +182,10 @@ in case that file does not provide any feature."
   (require 'window-number)
   (window-number-mode t)
   (window-number-meta-mode t))
+
+(with-eval-after-load "bash-completion-autoloads.el"
+  (add-hook 'shell-dynamic-complete-functions 'bash-completion-dynamic-complete)
+  (add-hook 'shell-command-complete-functions 'bash-completion-dynamic-complete))
 
 ;; (with-eval-after-load "yasnippet-autoloads.el"
 ;;   (yas-global-mode 1))
