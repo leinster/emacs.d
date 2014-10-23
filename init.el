@@ -526,6 +526,7 @@ new shell if required, and set `jon-shell-buffer'."
 
 (when *is-a-mac*
   (progn
+    (setq shell-file-name "/usr/local/bin/bash")
     (global-set-key (kbd "s-_") 'ns-do-hide-others)
     (when window-system
       (jon-font-monaco))
