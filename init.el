@@ -193,8 +193,7 @@ in case that file does not provide any feature."
 ;;; ----------------------------------------------------------------
 ;; auctex
 (with-eval-after-load "auctex-autoloads.el"
-  ;; TeX-engine-alist is set with customize to:
-  ;; '((luatex "LuaTeX" "luatex" "lualatex --synctex=1 --jobname=%s" "synctex"))
+  (setq LaTeX-command-style '(("" "%(PDF)%(latex) -file-line-error %S%(PDFout)")))
   ;; luatex param is required for Skim integration
   (setq-default TeX-PDF-mode t
                 TeX-engine 'luatex)
@@ -202,7 +201,7 @@ in case that file does not provide any feature."
   (setq TeX-view-program-list
         `(("Skim"
            "/Applications/Skim.app/Contents/SharedSupport/displayline -background %n %o %b")))
-  (setq Tex-engine-alist
+  (setq TeX-engine-alist
         '((luatex "LuaTeX" "luatex" "lualatex --synctex=1 --jobname=%s" "luatex"))))
 
 ;;; ----------------------------------------------------------------
