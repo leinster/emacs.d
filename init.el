@@ -221,6 +221,7 @@ in case that file does not provide any feature."
                      "SSH_AGENT_PID"
                      "GPG_AGENT_INFO"
                      "LANG"
+                     "LANGUAGE"
                      "LC_CTYPE"))
         (add-to-list 'exec-path-from-shell-variables var))
       (exec-path-from-shell-initialize))))
