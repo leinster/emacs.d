@@ -375,7 +375,10 @@ new shell if required, and set `jon-shell-buffer'."
       (setq jon-shell-buffer
             (let ((current-prefix-arg '(4)))
               (call-interactively 'shell)))
-    (shell jon-shell-buffer)))
+    (progn
+      (unless (buffer-name (get-buffer jon-shell-buffer))
+        (setq jon-shell-buffer "*shell*"))
+      (shell jon-shell-buffer))))
 
 (defun jon-switch-to-vm-shell ()
   "Switch to shell buffer `#vm`."
