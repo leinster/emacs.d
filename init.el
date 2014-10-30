@@ -363,7 +363,7 @@ in case that file does not provide any feature."
   (insert
    (format-time-string "%-e %b %Y")))
 
-(defvar jon-shell-buffer nil
+(defvar jon-shell-buffer "*shell*"
   "*Buffer to jump to with `jon-switch-to-shell'")
 
 (defun jon-switch-to-shell ()
