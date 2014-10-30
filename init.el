@@ -222,7 +222,9 @@ in case that file does not provide any feature."
                      "GPG_AGENT_INFO"
                      "LANG"
                      "LANGUAGE"
-                     "LC_CTYPE"))
+                     "LC_ALL"
+                     "CDPATH"
+                     "HOSTNAME"))
         (add-to-list 'exec-path-from-shell-variables var))
       (exec-path-from-shell-initialize))))
 
