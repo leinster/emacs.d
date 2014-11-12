@@ -452,7 +452,6 @@ new shell if required, and set `jon-shell-buffer'."
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)
 (global-set-key (kbd "C-h a") 'apropos)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
-
 (global-set-key (kbd "C-c c") 'compile)
 (global-set-key (kbd "C-c d") 'deft)
 (global-set-key (kbd "C-c f") 'finder)
@@ -505,8 +504,8 @@ new shell if required, and set `jon-shell-buffer'."
     (require 'ansi-color)
     (setq ansi-color-names-vector
           ["black"
-           "firebrick"
-           "DarkGreen"
+           "red1"
+           "green3"
            "DarkGoldenrod3"
            "navy"
            "DarkOrchid"
