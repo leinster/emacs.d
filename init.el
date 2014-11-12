@@ -423,6 +423,11 @@ new shell if required, and set `jon-shell-buffer'."
      "/"
      (cadr (split-string (buffer-file-name) "/content/"))))))
 
+(defun jon-frame-160 ()
+  (interactive)
+  (if (window-system)
+      (set-frame-width (selected-frame) 160)))
+
 (defun finder ()
   "Open current working directory in finder."
   (interactive)
@@ -450,8 +455,9 @@ new shell if required, and set `jon-shell-buffer'."
 (define-key global-map (kbd "C--") 'text-scale-decrease)
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)
-(global-set-key (kbd "C-h a") 'apropos)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-h a") 'apropos)
+
 (global-set-key (kbd "C-c c") 'compile)
 (global-set-key (kbd "C-c d") 'deft)
 (global-set-key (kbd "C-c f") 'finder)
