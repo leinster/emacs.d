@@ -109,6 +109,7 @@
     json-mode
     js2-mode
     js2-refactor
+    latex-extra
     less-css-mode
     magit
     markdown-mode
@@ -202,7 +203,8 @@ in case that file does not provide any feature."
         `(("Skim"
            "/Applications/Skim.app/Contents/SharedSupport/displayline -background %n %o %b")))
   (setq TeX-engine-alist
-        '((luatex "LuaTeX" "luatex" "lualatex --synctex=1 --jobname=%s" "luatex"))))
+        '((luatex "LuaTeX" "luatex" "lualatex --synctex=1 --jobname=%s" "luatex")))
+  (add-hook 'LaTeX-mode-hook #'latex-extra-mode))
 
 ;;; ----------------------------------------------------------------
 ;; deft
