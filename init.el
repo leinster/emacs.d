@@ -423,10 +423,9 @@ new shell if required, and set `jon-shell-buffer'."
      "/"
      (cadr (split-string (buffer-file-name) "/content/"))))))
 
-(defun jon-frame-160 ()
-  (interactive)
-  (if (window-system)
-      (set-frame-width (selected-frame) 160)))
+(defun jon-frame-width (&optional n)
+  (interactive "P")
+  (set-frame-width (selected-frame) (or n 160)))
 
 (defun finder ()
   "Open current working directory in finder."
