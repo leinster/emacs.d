@@ -427,6 +427,12 @@ new shell if required, and set `jon-shell-buffer'."
   (interactive "P")
   (set-frame-width (selected-frame) (or n 160)))
 
+(defun jon-window-width (&optional n)
+  (interactive "P")
+  (adjust-window-trailing-edge
+   (selected-window)
+   (- (or n 80) (window-width)) t))
+
 (defun finder ()
   "Open current working directory in finder."
   (interactive)
