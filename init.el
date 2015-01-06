@@ -384,6 +384,19 @@ new shell if required, and set `jon-shell-buffer'."
         (setq jon-shell-buffer "*shell*"))
       (shell jon-shell-buffer))))
 
+(defun jon-cd-shell-here ()
+"Switch to shell and change directory to the directory of the
+buffer currently in this window."
+  (interactive)
+  (if (buffer-file-name)
+      (let ((target-dir (file-name-directory (buffer-file-name))))
+        (progn
+          (jon-switch-to-shell)
+          (comint-simple-send
+           (get-buffer jon-shell-buffer)
+           (concat "cd " target-dir))))
+    (message "Buffer has no directory!")))
+
 (defun jon-switch-to-vm-shell ()
   "Switch to shell buffer `#vm`."
   (interactive)
