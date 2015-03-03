@@ -344,7 +344,11 @@ in case that file does not provide any feature."
                  "\\.html$"
                  "\\.css$"))
 (defun jon-web-mode-hook ()
-  (rainbow-mode))
+  (rainbow-mode)
+  (setq
+   web-mode-markup-indent-offset 2
+   web-mode-css-indent-offset 2
+   web-mode-code-indent-offset 2))
 (add-hook 'web-mode-hook 'jon-web-mode-hook)
 (add-hook 'web-mode-hook 'jon-run-coding-hook)
 
