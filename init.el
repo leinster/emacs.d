@@ -253,15 +253,8 @@ in case that file does not provide any feature."
 
 ;;; ----------------------------------------------------------------
 ;; json
-(defun prettify-json ()
-  (interactive)
-  (let ((b (if mark-active (min (point) (mark)) (point-min)))
-        (e (if mark-active (max (point) (mark)) (point-max))))
-    (shell-command-on-region
-     b e "/Users/jon/bin/prettify-json" (current-buffer) t)))
-
 (defun jon-json-hook ()
-  (local-set-key "\C-xp" 'prettify-json))
+  (local-set-key "\C-xp" 'json-pretty-print-buffer))
 (add-hook 'json-mode-hook 'jon-run-coding-hook)
 (add-hook 'json-mode-hook 'jon-json-hook)
 
