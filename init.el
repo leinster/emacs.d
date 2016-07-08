@@ -447,6 +447,31 @@ in case that file does not provide any feature."
         (setq imaxima-pt-size 12
               imaxima-fnt-size "large"))))
 
+;;; ----------------------------------------------------------------
+;; org-mode
+(with-eval-after-load "org"
+  (add-to-list 'org-babel-load-languages '(js . t))
+  (add-to-list 'org-babel-load-languages '(maxima . t))
+  (add-to-list 'org-babel-load-languages '(python . t))
+  (add-to-list 'org-babel-load-languages '(R . t))
+  (add-to-list 'org-babel-load-languages '(ruby . t))
+  (add-to-list 'org-babel-load-languages '(sh . t))
+  (add-to-list 'org-babel-load-languages '(sql . t))
+  (org-babel-do-load-languages
+   'org-babel-load-languages org-babel-load-languages)
+  (org-add-link-type "grep" 'jon-grep)
+  (setq org-confirm-babel-evaluate nil)
+  (setq
+   org-file-apps
+   (cons
+    '("\\.pdf\\'" . "/Applications/Skim.app/Contents/MacOS/Skim %s")
+    (delete '("\\.pdf\\'" . default) org-file-apps)))
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (visual-line-mode t)
+              (local-set-key (kbd "s-\\") 'org-twbs-export-to-html))))
+
+;;; ----------------------------------------------------------------
 ;; php
 (with-eval-after-load "php-mode-autoloads.el"
   (add-auto-mode 'php-mode "\\.php\\'"))
