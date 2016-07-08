@@ -342,6 +342,14 @@ in case that file does not provide any feature."
         deft-auto-save-interval 0))
 
 ;;; ----------------------------------------------------------------
+;; dired
+(with-eval-after-load "dired"
+  (when *is-a-mac*
+    (progn (require 'ls-lisp)
+           (setq insert-directory-program "/usr/local/bin/gls")))
+  (setq dired-listing-switches "-alh --group-directories-first"))
+
+;;; ----------------------------------------------------------------
 ;; set $PATH, $MANPATH, and exec-path from shell, mac only
 (with-eval-after-load "exec-path-from-shell-autoloads.el"
   (when *is-a-mac*
