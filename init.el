@@ -90,6 +90,133 @@
              'try-complete-file-name-partially t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; defuns
+(defun jon-search-mdn (thing)
+  "Search MDN for THING."
+  (interactive "sSearch MDN for: ")
+  (browse-url (concat "http:///www.google.com/search?ie=UTF-8&q="
+                      (jon-urlencode (concat "mdn " thing)))))
+
+(defun jon-search-mdn-for-thing-at-point ()
+  "Search MDN for thing at point."
+  (interactive)
+  (let ((thing (thing-at-point 'word)))
+    (jon-search-mdn thing)))
+
+(defun insert-date ()
+  (interactive)
+  (insert
+   (format-time-string "%-e %b %Y")))
+
+(defun insert-time ()
+  (interactive)
+  (insert
+   (format-time-string "%H:%M")))
+
+(defvar jon-shell-buffer "*shell*"
+  "*Buffer to jump to with `jon-switch-to-shell'")
+
+(defun jon-switch-to-shell ()
+  "Switch to the shell buffer `jon-shell-buffer' or to `*shell*'.
+With a prefix-argument jump to a shell buffer by name, creating a
+new shell if required, and set `jon-shell-buffer'."
+  (interactive)
+  (if current-prefix-arg
+      (setq jon-shell-buffer
+            (let ((current-prefix-arg '(4)))
+              (call-interactively 'shell)))
+    (progn
+      (unless (buffer-name (get-buffer jon-shell-buffer))
+        (setq jon-shell-buffer "*shell*"))
+      (shell jon-shell-buffer))))
+
+(defun jon-cd-shell-here ()
+  "Switch to shell and change directory to the directory of the
+buffer currently in this window."
+  (interactive)
+  (if default-directory
+      (let ((target-dir default-directory))
+        (progn
+          (comint-simple-send
+           (get-buffer jon-shell-buffer)
+           (concat "cd " default-directory))
+          (jon-switch-to-shell)))
+    (message "Buffer has no directory!")))
+
+(defun jon-switch-to-vm-shell ()
+  "Switch to shell buffer `#vm`."
+  (interactive)
+  (if (get-buffer "#vm")
+      (switch-to-buffer "#vm")
+    (progn
+      (shell "#vm")
+      (cd (expand-file-name "~/SE/"))
+      (comint-simple-send (get-buffer "#vm") "cd ~/SE/")
+      (comint-simple-send (get-buffer "#vm") "vm"))))
+
+(defun jon-copy-filename-to-kill-ring ()
+  (interactive)
+  (let ((filename (if (equal major-mode 'dired-mode)
+                      default-directory
+                    (buffer-file-name))))
+    (when filename
+      (kill-new filename))
+    (message "%s" filename)))
+
+(defun jon-se-docs ()
+  (interactive)
+  (w3m-browse-url "http://se_www/doc"))
+
+(defun jon-open-se-doc-src ()
+  (interactive)
+  (find-file-other-window
+   (expand-file-name
+    (concat
+     "~/SE/www/content"
+     (substring (cadr (split-string w3m-current-url "se_www")) 0 -1)
+     ".markdown"))))
+
+(defun jon-open-se-doc-page ()
+  (interactive)
+  (w3m-browse-url
+   (concat
+    "http://se_www/"
+    (replace-regexp-in-string
+     ".markdown"
+     "/"
+     (cadr (split-string (buffer-file-name) "/content/"))))))
+
+(defun jon-frame-width (&optional n)
+  (interactive "P")
+  (set-frame-width (selected-frame) (or n 162)))
+
+(defun jon-window-width (&optional n)
+  (interactive "P")
+  (adjust-window-trailing-edge
+   (selected-window)
+   (- (or n 80) (window-width)) t))
+
+;;; http://endlessparentheses.com/use-org-mode-links-for-absolutely-anything.html
+(defun jon-grep (regexp)
+  "Run `grep' with REGEXP as argument."
+  (interactive "sSearch for: ")
+  (grep-compute-defaults)
+  (rgrep regexp "*" (expand-file-name "./")))
+
+(defun finder ()
+  "Open current working directory in finder."
+  (interactive)
+  (shell-command
+   (concat jon-open " "
+           (shell-quote-argument
+            (expand-file-name default-directory)))))
+
+(defun maybe-suspend-frame ()
+  (interactive)
+  (unless (and *is-a-mac* window-system)
+    (suspend-frame)))
+(global-set-key (kbd "C-z") 'maybe-suspend-frame)
+
 ;;; packages
 (require 'package)
 (add-to-list 'package-archives
@@ -318,6 +445,11 @@ in case that file does not provide any feature."
 (add-hook 'shell-mode-hook 'jon-run-coding-hook)
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 (add-hook 'shell-mode-hook 'visual-line-mode)
+;;; http://www.emacswiki.org/emacs/ModeLineDirtrack
+(defun add-mode-line-dirtrack ()
+  (add-to-list 'mode-line-buffer-identification
+               '(:propertize (" " default-directory " ") face dired-directory)))
+(add-hook 'shell-mode-hook 'add-mode-line-dirtrack)
 
 ;;; ----------------------------------------------------------------
 ;; shell scripts
@@ -347,122 +479,6 @@ in case that file does not provide any feature."
 (add-hook 'web-mode-hook 'jon-run-coding-hook)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; defuns
-(defun jon-search-mdn (thing)
-  "Search MDN for THING."
-  (interactive "sSearch MDN for: ")
-  (browse-url (concat "http:///www.google.com/search?ie=UTF-8&q="
-                      (jon-urlencode (concat "mdn " thing)))))
-
-(defun jon-search-mdn-for-thing-at-point ()
-  "Search MDN for thing at point."
-  (interactive)
-  (let ((thing (thing-at-point 'word)))
-    (jon-search-mdn thing)))
-
-(defun insert-timestamp ()
-  (interactive)
-  (insert
-   (format-time-string "%-e %b %Y")))
-
-(defvar jon-shell-buffer "*shell*"
-  "*Buffer to jump to with `jon-switch-to-shell'")
-
-(defun jon-switch-to-shell ()
-  "Switch to the shell buffer `jon-shell-buffer' or to `*shell*'.
-With a prefix-argument jump to a shell buffer by name, creating a
-new shell if required, and set `jon-shell-buffer'."
-  (interactive)
-  (if current-prefix-arg
-      (setq jon-shell-buffer
-            (let ((current-prefix-arg '(4)))
-              (call-interactively 'shell)))
-    (progn
-      (unless (buffer-name (get-buffer jon-shell-buffer))
-        (setq jon-shell-buffer "*shell*"))
-      (shell jon-shell-buffer))))
-
-(defun jon-cd-shell-here ()
-"Switch to shell and change directory to the directory of the
-buffer currently in this window."
-  (interactive)
-  (if (buffer-file-name)
-      (let ((target-dir (file-name-directory (buffer-file-name))))
-        (progn
-          (jon-switch-to-shell)
-          (comint-simple-send
-           (get-buffer jon-shell-buffer)
-           (concat "cd " target-dir))))
-    (message "Buffer has no directory!")))
-
-(defun jon-switch-to-vm-shell ()
-  "Switch to shell buffer `#vm`."
-  (interactive)
-  (if (get-buffer "#vm")
-      (switch-to-buffer "#vm")
-    (progn
-      (shell "#vm")
-      (cd (expand-file-name "~/SE/"))
-      (comint-simple-send (get-buffer "#vm") "cd ~/SE/")
-      (comint-simple-send (get-buffer "#vm") "vm"))))
-
-(defun jon-copy-filename-to-kill-ring ()
-  (interactive)
-  (kill-new (buffer-file-name))
-  (message "%s" (buffer-file-name)))
-
-(defun jon-se-docs ()
-  (interactive)
-  (w3m-browse-url "http://se_www/doc"))
-
-(defun jon-open-se-doc-src ()
-  (interactive)
-  (find-file-other-window
-   (expand-file-name
-    (concat
-     "~/SE/www/content"
-     (substring (cadr (split-string w3m-current-url "se_www")) 0 -1)
-     ".markdown"))))
-
-(defun jon-open-se-doc-page ()
-  (interactive)
-  (w3m-browse-url
-   (concat
-    "http://se_www/"
-    (replace-regexp-in-string
-     ".markdown"
-     "/"
-     (cadr (split-string (buffer-file-name) "/content/"))))))
-
-(defun jon-frame-width (&optional n)
-  (interactive "P")
-  (set-frame-width (selected-frame) (or n 160)))
-
-(defun jon-window-width (&optional n)
-  (interactive "P")
-  (adjust-window-trailing-edge
-   (selected-window)
-   (- (or n 80) (window-width)) t))
-
-(defun finder ()
-  "Open current working directory in finder."
-  (interactive)
-  (shell-command
-   (concat jon-open " "
-           (shell-quote-argument
-            (expand-file-name default-directory)))))
-
-(defun maybe-suspend-frame ()
-  (interactive)
-  (unless (and *is-a-mac* window-system)
-    (suspend-frame)))
-(global-set-key (kbd "C-z") 'maybe-suspend-frame)
-
-;;; http://www.emacswiki.org/emacs/ModeLineDirtrack
-(defun add-mode-line-dirtrack ()
-  (add-to-list 'mode-line-buffer-identification
-               '(:propertize (" " default-directory " ") face dired-directory)))
-(add-hook 'shell-mode-hook 'add-mode-line-dirtrack)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; keybindings
