@@ -375,6 +375,12 @@ in case that file does not provide any feature."
 (add-hook 'flyspell-mode-hook 'jon-flyspell-hook)
 
 ;;; ----------------------------------------------------------------
+;;; grep
+(defun jon-grep-hook ()
+  (toggle-truncate-lines 1))
+(add-hook 'grep-mode-hook 'jon-grep-hook)
+
+;;; ----------------------------------------------------------------
 ;; haml
 (add-hook 'haml-mode-hook 'jon-run-coding-hook)
 (add-hook 'haml-mode-hook 'jon-run-coding-hook)
