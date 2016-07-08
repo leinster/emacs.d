@@ -553,7 +553,6 @@ in case that file does not provide any feature."
 
 (global-set-key (kbd "C-c c") 'compile)
 (global-set-key (kbd "C-c d") 'deft)
-(global-set-key (kbd "C-c f") 'finder)
 (global-set-key (kbd "C-c g") 'rgrep)
 (global-set-key (kbd "C-c o") 'occur)
 (global-set-key (kbd "C-c s") 'jon-switch-to-shell)
@@ -566,6 +565,10 @@ in case that file does not provide any feature."
 (global-set-key (kbd "C-c y") 'bury-buffer)
 (global-set-key (kbd "C-c +") 'calculator)
 (global-set-key `[(control meta tab)] 'indent-rigidly)
+
+;;; mode specific key-bindings
+(with-eval-after-load "dired"
+  (define-key dired-mode-map (kbd "C-c o") 'finder))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; desktop
