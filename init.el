@@ -243,6 +243,7 @@ buffer currently in this window."
     markdown-mode
     markdown-mode+
     mustache-mode
+    ox-twbs
     paredit
     php-mode
     php-eldoc
