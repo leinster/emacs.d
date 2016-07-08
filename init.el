@@ -501,6 +501,11 @@ in case that file does not provide any feature."
 (add-hook 'shell-mode-hook 'jon-run-coding-hook)
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 (add-hook 'shell-mode-hook 'visual-line-mode)
+(defun beep-on-alert-char (str)
+  (if (string-match-p "\x7" str)
+      (let ((visible-bell nil))
+        (beep))))
+(add-hook 'comint-output-filter-functions 'beep-on-alert-char)
 ;;; http://www.emacswiki.org/emacs/ModeLineDirtrack
 (defun add-mode-line-dirtrack ()
   (add-to-list 'mode-line-buffer-identification
