@@ -131,16 +131,15 @@ new shell if required, and set `jon-shell-buffer'."
       (shell jon-shell-buffer))))
 
 (defun jon-cd-shell-here ()
-  "Switch to shell and change directory to the directory of the
-buffer currently in this window."
+  "Change shell directory to the directory of the buffer
+currently in this window."
   (interactive)
   (if default-directory
       (let ((target-dir default-directory))
         (progn
           (comint-simple-send
            (get-buffer jon-shell-buffer)
-           (concat "cd " default-directory))
-          (jon-switch-to-shell)))
+           (concat "cd " (shell-quote-argument default-directory)))))
     (message "Buffer has no directory!")))
 
 (defun jon-switch-to-vm-shell ()
@@ -217,6 +216,7 @@ buffer currently in this window."
     (suspend-frame)))
 (global-set-key (kbd "C-z") 'maybe-suspend-frame)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; packages
 (require 'package)
 (add-to-list 'package-archives
@@ -233,6 +233,7 @@ buffer currently in this window."
     flycheck
     haml-mode
     heroku-theme
+    htmlize
     inf-ruby
     json-mode
     js2-mode
@@ -242,7 +243,9 @@ buffer currently in this window."
     magit
     markdown-mode
     markdown-mode+
+    moe-theme
     mustache-mode
+    nim-mode
     ox-twbs
     paredit
     php-mode
@@ -252,6 +255,7 @@ buffer currently in this window."
     ruby-end
     ruby-tools
     smex
+    string-inflection
     sublime-themes
     web-mode
     window-number
@@ -320,6 +324,9 @@ in case that file does not provide any feature."
 
 ;; (with-eval-after-load "yasnippet-autoloads.el"
 ;;   (yas-global-mode 1))
+
+(with-eval-after-load "string-inflection.el"
+  (require 'string-inflection))
 
 ;;; ----------------------------------------------------------------
 ;; auctex
@@ -484,6 +491,11 @@ in case that file does not provide any feature."
 (add-hook 'php-mode-hook 'jon-php-mode-hook)
 
 ;;; ----------------------------------------------------------------
+;;; remember
+(with-eval-after-load "remember"
+  (setq remember-notes-initial-major-mode 'org-mode))
+
+;;; ----------------------------------------------------------------
 ;; ruby
 (add-auto-mode 'ruby-mode
                "\\.rake$"
@@ -541,6 +553,21 @@ in case that file does not provide any feature."
 (add-hook 'web-mode-hook 'jon-run-coding-hook)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; sending mail
+(setq
+ send-mail-function 'smtpmail-send-it
+ message-send-mail-function 'smtpmail-send-it
+ user-mail-address "jonathon.ramsey@gmail.com"
+ smtpmail-starttls-credentials '(("smtp.gmail.com" "587" nil nil))
+ smtpmail-auth-credentials  (expand-file-name "~/.authinfo")
+ smtpmail-default-smtp-server "smtp.gmail.com"
+ smtpmail-smtp-server "smtp.gmail.com"
+ smtpmail-smtp-service 587
+ smtpmail-debug-info t
+ starttls-extra-arguments nil
+ starttls-extra-arguments nil
+ starttls-use-gnutls t
+)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; keybindings
@@ -552,9 +579,12 @@ in case that file does not provide any feature."
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-h a") 'apropos)
 
+(global-set-key (kbd "C-c a") 'jon-cd-shell-here)
 (global-set-key (kbd "C-c c") 'compile)
 (global-set-key (kbd "C-c d") 'deft)
 (global-set-key (kbd "C-c g") 'rgrep)
+(global-set-key (kbd "C-c i") 'string-inflection-all-cycle)
+(global-set-key (kbd "C-c h") 'insert-time)
 (global-set-key (kbd "C-c o") 'occur)
 (global-set-key (kbd "C-c s") 'jon-switch-to-shell)
 (global-set-key (kbd "C-c t") 'insert-date)
@@ -618,7 +648,12 @@ in case that file does not provide any feature."
     (load-theme 'whiteboard)))
 
 (when (not window-system)
-  (menu-bar-mode -1))
+  (progn (menu-bar-mode -1)
+         ;; (require 'moe-theme)
+         ;; (setq moe-light-pure-white-background-in-terminal t
+         ;;       moe-theme-highlight-buffer-id t)
+         ;; (load-theme 'moe-light)
+         ))
 
 (defun jon-font-inconsolata ()
   (interactive)
