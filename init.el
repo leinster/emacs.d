@@ -245,6 +245,7 @@ buffer currently in this window."
     mustache-mode
     paredit
     php-mode
+    php-eldoc
     rainbow-delimiters
     rainbow-mode
     ruby-end
@@ -476,7 +477,8 @@ in case that file does not provide any feature."
 (with-eval-after-load "php-mode-autoloads.el"
   (add-auto-mode 'php-mode "\\.php\\'"))
 (defun jon-php-mode-hook ()
-  (setq c-basic-offset 4))
+  (setq c-basic-offset 4)
+  (php-eldoc-enable))
 (add-hook 'php-mode-hook 'jon-run-coding-hook)
 (add-hook 'php-mode-hook 'jon-php-mode-hook)
 
