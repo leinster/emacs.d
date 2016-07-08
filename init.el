@@ -82,6 +82,7 @@
 (setq-default save-place t)
 
 (require 'midnight)                     ; delete old buffers automatically
+(setq clean-buffer-list-delay-general 8) ; kill after 8 days
 
 (dolist (f '(try-expand-line try-expand-list try-complete-file-name-partially))
   (delete f hippie-expand-try-functions-list))
