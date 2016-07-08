@@ -432,6 +432,21 @@ in case that file does not provide any feature."
                          )))
 
 ;;; ----------------------------------------------------------------
+;; imaxima
+;; https://sites.google.com/site/imaximaimath/
+;; points to version specific share folder, imaxima isn't in packages
+(let* ((maxima-version "5.36.1")
+       (maxima-elisp-path (concat "/usr/local/share/maxima/"
+                                  maxima-version
+                                  "/emacs/")))
+  (if (file-exists-p maxima-elisp-path)
+      (progn
+        (push maxima-elisp-path load-path)
+        (autoload 'imaxima "imaxima" "Maxima frontend" t)
+        (autoload 'imath-mode "imath" "Interactive Math mode" t)
+        (setq imaxima-pt-size 12
+              imaxima-fnt-size "large"))))
+
 ;; php
 (with-eval-after-load "php-mode-autoloads.el"
   (add-auto-mode 'php-mode "\\.php\\'"))
