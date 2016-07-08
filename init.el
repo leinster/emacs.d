@@ -556,7 +556,7 @@ in case that file does not provide any feature."
 (global-set-key (kbd "C-c g") 'rgrep)
 (global-set-key (kbd "C-c o") 'occur)
 (global-set-key (kbd "C-c s") 'jon-switch-to-shell)
-(global-set-key (kbd "C-c t") 'insert-timestamp)
+(global-set-key (kbd "C-c t") 'insert-date)
 (global-set-key (kbd "C-c m") 'magit-status)
 (global-set-key (kbd "C-c n") 'remember-notes)
 (global-set-key (kbd "C-c u") 'browse-url-at-point)
