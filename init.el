@@ -613,7 +613,8 @@ in case that file does not provide any feature."
            "DarkOrchid"
            "SteelBlue"
            "white"])
-    (setq ansi-color-map (ansi-color-make-color-map))))
+    (setq ansi-color-map (ansi-color-make-color-map))
+    (load-theme 'whiteboard)))
 
 (when (not window-system)
   (menu-bar-mode -1))
