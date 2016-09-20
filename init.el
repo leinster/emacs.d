@@ -301,7 +301,8 @@ in case that file does not provide any feature."
   (add-auto-mode 'gfm-mode
                  "[Tt][Oo][Dd][Oo]"
                  "\\.markdown\\'"
-                 "\\.md\\'"))
+                 "\\.md\\'")
+  (add-hook 'gfm-mode-hook '(lambda () (visual-line-mode t))))
 
 (with-eval-after-load "mustache-mode-autoloads.el"
   (add-auto-mode 'mustache-mode "\\.mustache$"))
