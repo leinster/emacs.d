@@ -469,13 +469,16 @@ in case that file does not provide any feature."
   (add-to-list 'org-babel-load-languages '(sql . t))
   (org-babel-do-load-languages
    'org-babel-load-languages org-babel-load-languages)
-  (org-add-link-type "grep" 'jon-grep)
   (setq org-confirm-babel-evaluate nil)
+
+  (org-add-link-type "grep" 'jon-grep)
+
   (setq
    org-file-apps
    (cons
     '("\\.pdf\\'" . "/Applications/Skim.app/Contents/MacOS/Skim %s")
     (delete '("\\.pdf\\'" . default) org-file-apps)))
+
   (add-hook 'org-mode-hook
             (lambda ()
               (visual-line-mode t)
