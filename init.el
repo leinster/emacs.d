@@ -224,20 +224,26 @@ currently in this window."
 (package-initialize)
 
 (defvar jon-required-packages
-  '(auctex
+  '(
+    apache-mode
+    auctex
     bash-completion
     csv-mode
     deft
     exec-path-from-shell
+    f
     fill-column-indicator
     flycheck
+    font-utils
+    ghc
     haml-mode
+    haskell-mode
     heroku-theme
     htmlize
     inf-ruby
-    json-mode
     js2-mode
     js2-refactor
+    json-mode
     latex-extra
     less-css-mode
     magit
@@ -246,10 +252,12 @@ currently in this window."
     moe-theme
     mustache-mode
     nim-mode
+    org
+    orgit
     ox-twbs
     paredit
-    php-mode
     php-eldoc
+    php-mode
     rainbow-delimiters
     rainbow-mode
     ruby-end
@@ -257,9 +265,10 @@ currently in this window."
     smex
     string-inflection
     sublime-themes
+    ucs-utils
+    w3m
     web-mode
     window-number
-    w3m
     yaml-mode
     yasnippet
     zenburn-theme
