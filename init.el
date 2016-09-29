@@ -526,9 +526,9 @@ in case that file does not provide any feature."
                '(:propertize (" " default-directory " ") face dired-directory)))
 (add-hook 'shell-mode-hook 'add-mode-line-dirtrack)
 
-;;; keep shell opening in current window
-(add-to-list 'display-buffer-alist
-             '("^\\*shell\\*$" . display-buffer-same-window))
+;;; keep shell & #vm shell opening in current window
+(add-to-list 'same-window-regexps
+             (quote ("\\(\\*shell\\*.*\\|\\#vm\\)")))
 
 ;;; ----------------------------------------------------------------
 ;; shell scripts
