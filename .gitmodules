@@ -1,0 +1,3 @@
+[submodule "se-emacs"]
+	path = se-emacs
+	url = git@git.sealedenvelope.com:/var/git/se-emacs

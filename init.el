@@ -468,6 +468,10 @@ in case that file does not provide any feature."
 
 ;;; ----------------------------------------------------------------
 ;; org-mode
+;;; pull in se-org-mode
+(add-to-list 'load-path "~/.emacs.d/se-emacs")
+(load "se-org-mode")
+
 (with-eval-after-load "org"
   (add-to-list 'org-babel-load-languages '(js . t))
   (add-to-list 'org-babel-load-languages '(maxima . t))
