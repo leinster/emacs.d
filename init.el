@@ -475,6 +475,7 @@ in case that file does not provide any feature."
 (with-eval-after-load "org"
   (add-to-list 'org-babel-load-languages '(js . t))
   (add-to-list 'org-babel-load-languages '(maxima . t))
+  (add-to-list 'org-babel-load-languages '(octave . t))
   (add-to-list 'org-babel-load-languages '(python . t))
   (add-to-list 'org-babel-load-languages '(R . t))
   (add-to-list 'org-babel-load-languages '(ruby . t))
