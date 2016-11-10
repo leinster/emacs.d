@@ -189,6 +189,10 @@ currently in this window."
   (interactive "P")
   (set-frame-width (selected-frame) (or n 162)))
 
+(defun jon-80 ()
+  (interactive)
+  (set-frame-width (selected-frame) 80))
+
 (defun jon-window-width (&optional n)
   (interactive "P")
   (adjust-window-trailing-edge
