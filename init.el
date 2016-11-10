@@ -489,6 +489,9 @@ in case that file does not provide any feature."
    'org-babel-load-languages org-babel-load-languages)
   (setq org-confirm-babel-evaluate nil)
 
+  ;; markdown export
+  (require 'ox-md nil t)
+
   (org-add-link-type "grep" 'jon-grep)
 
   (setq
