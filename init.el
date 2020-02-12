@@ -37,7 +37,11 @@
  user-mail-address "jonathon.ramsey@gmail.com"
  mail-default-reply-to "jonathon.ramsey@gmail.com"
 
+ ;; put backups and auto-saves into specific directories
  backup-directory-alist (quote (("." . "~/.emacs.d/backups")))
+ auto-save-file-name-transforms `((".*" "/Users/jon/.emacs.d/auto-saves/" t))
+ ;; & don't create lockfiles
+ create-lockfiles nil
 
  mouse-yank-at-point t
  global-auto-revert-mode t)
@@ -135,11 +139,14 @@ new shell if required, and set `jon-shell-buffer'."
 currently in this window."
   (interactive)
   (if default-directory
-      (let ((target-dir default-directory))
+      (let ((target-dir (expand-file-name default-directory))
+            (shell-buffer (get-buffer jon-shell-buffer)))
         (progn
           (comint-simple-send
-           (get-buffer jon-shell-buffer)
-           (concat "cd " (shell-quote-argument default-directory)))))
+           shell-buffer
+           (concat "cd " (shell-quote-argument target-dir)))
+          (switch-to-buffer-other-window shell-buffer)
+          (cd target-dir)))
     (message "Buffer has no directory!")))
 
 (defun jon-switch-to-vm-shell ()
@@ -214,17 +221,31 @@ currently in this window."
            (shell-quote-argument
             (expand-file-name default-directory)))))
 
+(fset 'php-fix-array
+   (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([19 97 114 114 97 121 40 2 134217734 backspace 93 134217730 91 4 4 2 M-backspace] 0 "%d")) arg)))
+
 (defun maybe-suspend-frame ()
   (interactive)
   (unless (and *is-a-mac* window-system)
     (suspend-frame)))
-(global-set-key (kbd "C-z") 'maybe-suspend-frame)
+
+;;; https://emacs.stackexchange.com/questions/2189
+(defun toggle-window-dedicated ()
+  "Control whether or not Emacs is allowed to display another
+buffer in current window."
+  (interactive)
+  (message
+   (if (let (window (get-buffer-window (current-buffer)))
+         (set-window-dedicated-p window (not (window-dedicated-p window))))
+       "%s: Can't touch this!"
+     "%s is up for grabs.")
+   (current-buffer)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; packages
 (require 'package)
 (add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+             '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
 (defvar jon-required-packages
@@ -232,6 +253,8 @@ currently in this window."
     apache-mode
     auctex
     bash-completion
+    buffer-move
+    chruby
     csv-mode
     deft
     exec-path-from-shell
@@ -239,6 +262,7 @@ currently in this window."
     fill-column-indicator
     flycheck
     font-utils
+    geiser
     ghc
     haml-mode
     haskell-mode
@@ -253,7 +277,6 @@ currently in this window."
     magit
     markdown-mode
     markdown-mode+
-    moe-theme
     mustache-mode
     nim-mode
     org
@@ -262,6 +285,7 @@ currently in this window."
     paredit
     php-eldoc
     php-mode
+    prettier-js
     rainbow-delimiters
     rainbow-mode
     ruby-end
@@ -366,14 +390,33 @@ in case that file does not provide any feature."
 
 ;;; ----------------------------------------------------------------
 ;; dired
+;;;
+;;; dired-dwim-target prompts with another open dired buffer as target
+;;; when moving/copying etc.
 (with-eval-after-load "dired"
   (when *is-a-mac*
     (progn (require 'ls-lisp)
            (setq insert-directory-program "/usr/local/bin/gls")))
-  (setq dired-listing-switches "-alh --group-directories-first"))
+  (setq dired-listing-switches "-alh --group-directories-first"
+        dired-dwim-target 1))
+(add-hook 'dired-load-hook
+          (lambda ()
+            (load "dired-x")
+            ;; Set dired-x global variables here.  For example:
+            ;; (setq dired-guess-shell-gnutar "gtar")
+            ;; (setq dired-x-hands-off-my-keys nil)
+            ))
+(add-hook 'dired-mode-hook
+          (lambda ()
+            ;; Set dired-x buffer-local variables here.  For example:
+            ;; (dired-omit-mode 1)
+            ))
 
 ;;; ----------------------------------------------------------------
 ;; set $PATH, $MANPATH, and exec-path from shell, mac only
+;;
+;; emacs started from Apps won't pick up shell environment, this
+;; package + config pulls in environment variables that we need
 (with-eval-after-load "exec-path-from-shell-autoloads.el"
   (when *is-a-mac*
     (progn
@@ -385,7 +428,8 @@ in case that file does not provide any feature."
                      "LANGUAGE"
                      "LC_ALL"
                      "CDPATH"
-                     "HOSTNAME"))
+                     "HOSTNAME"
+                     "SE_PIVOTAL_API_TOKEN"))
         (add-to-list 'exec-path-from-shell-variables var))
       (exec-path-from-shell-initialize))))
 
@@ -404,6 +448,7 @@ in case that file does not provide any feature."
         ispell-extra-args '("--sug-mode=fast")
         ispell-list-command "list"))
 (add-hook 'flyspell-mode-hook 'jon-flyspell-hook)
+(add-hook 'text-mode-hook 'flyspell-mode)
 
 ;;; ----------------------------------------------------------------
 ;;; grep
@@ -422,15 +467,20 @@ in case that file does not provide any feature."
   (local-set-key "\C-xp" 'json-pretty-print-buffer))
 (add-hook 'json-mode-hook 'jon-run-coding-hook)
 (add-hook 'json-mode-hook 'jon-json-hook)
+(add-hook 'json-mode-hook #'flycheck-mode)
 
 ;;; ----------------------------------------------------------------
 ;; javascript
+(with-eval-after-load "prettier-js.el"
+  (require "prettier-js"))
+
 (with-eval-after-load "js2-mode-autoloads.el"
   (add-auto-mode 'js2-mode "\\.js\\'")
   (setq-default js2-basic-offset 2
                 js2-concat-multiline-strings 'eol
                 js2-include-node-externs t
-                js2-skip-preprocessor-directives t))
+                js2-skip-preprocessor-directives t)
+  (add-hook 'js2-mode-hook 'prettier-js-mode))
 
 (with-eval-after-load "js2-refactor-autoloads.el"
   (require #'js2-refactor))
@@ -472,9 +522,6 @@ in case that file does not provide any feature."
 
 ;;; ----------------------------------------------------------------
 ;; org-mode
-;;; pull in se-org-mode
-(add-to-list 'load-path "~/.emacs.d/se-emacs")
-(load "se-org-mode")
 
 (with-eval-after-load "org"
   (add-to-list 'org-babel-load-languages '(js . t))
@@ -483,11 +530,15 @@ in case that file does not provide any feature."
   (add-to-list 'org-babel-load-languages '(python . t))
   (add-to-list 'org-babel-load-languages '(R . t))
   (add-to-list 'org-babel-load-languages '(ruby . t))
-  (add-to-list 'org-babel-load-languages '(sh . t))
+  (add-to-list 'org-babel-load-languages '(scheme . t))
+  (add-to-list 'org-babel-load-languages '(shell . t))
   (add-to-list 'org-babel-load-languages '(sql . t))
   (org-babel-do-load-languages
    'org-babel-load-languages org-babel-load-languages)
   (setq org-confirm-babel-evaluate nil)
+
+  ;; src, example etc. templates
+  (require 'org-tempo)
 
   ;; markdown export
   (require 'ox-md nil t)
@@ -522,6 +573,8 @@ in case that file does not provide any feature."
 
 ;;; ----------------------------------------------------------------
 ;; ruby
+(require 'chruby)
+(chruby "2.5")
 (add-auto-mode 'ruby-mode
                "\\.rake$"
                "\\.gemspec$"
@@ -571,15 +624,24 @@ in case that file does not provide any feature."
 (with-eval-after-load "web-mode-autoloads.el"
   (add-auto-mode 'web-mode
                  "\\.html$"
-                 "\\.css$"))
+                 "\\.css$"
+                 ;; "\\.php$"
+                 ))
 (defun jon-web-mode-hook ()
   (rainbow-mode)
   (setq
    web-mode-markup-indent-offset 2
    web-mode-css-indent-offset 2
-   web-mode-code-indent-offset 2))
+   web-mode-code-indent-offset 4))
 (add-hook 'web-mode-hook 'jon-web-mode-hook)
 (add-hook 'web-mode-hook 'jon-run-coding-hook)
+
+;;; ----------------------------------------------------------------
+;; Sealed Envelope minor-modes
+(add-to-list 'load-path "~/.emacs.d/se-emacs")
+(load "se-org-mode")
+(load "se-markdown-mode")
+(load "se-thoth-mode")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; sending mail
@@ -612,18 +674,25 @@ in case that file does not provide any feature."
 (global-set-key (kbd "C-c c") 'compile)
 (global-set-key (kbd "C-c d") 'deft)
 (global-set-key (kbd "C-c g") 'rgrep)
-(global-set-key (kbd "C-c i") 'string-inflection-all-cycle)
 (global-set-key (kbd "C-c h") 'insert-time)
-(global-set-key (kbd "C-c o") 'occur)
-(global-set-key (kbd "C-c s") 'jon-switch-to-shell)
-(global-set-key (kbd "C-c t") 'insert-date)
+(global-set-key (kbd "C-c i") 'string-inflection-all-cycle)
+(global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c m") 'magit-status)
 (global-set-key (kbd "C-c n") 'remember-notes)
+(global-set-key (kbd "C-c o") 'occur)
+(global-set-key (kbd "C-c s") 'jon-switch-to-shell)
+;; (global-set-key (kbd "C-c t") 'insert-date)
+(global-set-key (kbd "C-c t") 'toggle-window-dedicated)
 (global-set-key (kbd "C-c u") 'browse-url-at-point)
 (global-set-key (kbd "C-c v") 'jon-switch-to-vm-shell)
 (global-set-key (kbd "C-c w") 'jon-copy-filename-to-kill-ring)
 (global-set-key (kbd "C-c y") 'bury-buffer)
+(global-set-key (kbd "C-z") 'maybe-suspend-frame)
 (global-set-key (kbd "C-c +") 'calculator)
+(global-set-key (kbd "C-c <left>") 'buf-move-left)
+(global-set-key (kbd "C-c <right>") 'buf-move-right)
+(global-set-key (kbd "C-c <up>") 'buf-move-up)
+(global-set-key (kbd "C-c <down>") 'buf-move-down)
 (global-set-key `[(control meta tab)] 'indent-rigidly)
 
 ;;; mode specific key-bindings
@@ -677,12 +746,7 @@ in case that file does not provide any feature."
     (load-theme 'whiteboard)))
 
 (when (not window-system)
-  (progn (menu-bar-mode -1)
-         ;; (require 'moe-theme)
-         ;; (setq moe-light-pure-white-background-in-terminal t
-         ;;       moe-theme-highlight-buffer-id t)
-         ;; (load-theme 'moe-light)
-         ))
+  (progn (menu-bar-mode -1)))
 
 (defun jon-font-inconsolata ()
   (interactive)
